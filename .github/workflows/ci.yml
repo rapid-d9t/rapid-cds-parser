@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build
-      run: cargo build --verbose
+      run: npm i
     
   test:
     name: Test
@@ -24,7 +24,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Unit
-      run: cargo test --verbose
+      run: npm test
       
   lint:
     name: Lint
@@ -38,7 +38,7 @@ jobs:
         rustup component add rustfmt
         rustfmt --version
     - name: Lint
-      run: rustfmt ./src/main.rs --check
+      run: rustfmt ./src/lib.rs --check
 
   code-scan:
     name: Code Scan

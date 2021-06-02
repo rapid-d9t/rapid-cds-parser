@@ -1,0 +1,29 @@
+{
+  "name": "rapid-cds-parser",
+  "version": "0.1.0",
+  "description": "npm module for rapid parsing of cds",
+  "main": "index.node",
+  "scripts": {
+    "build": "cargo-cp-artifact -nc index.node -- cargo build --message-format=json-render-diagnostics",
+    "install": "npm run build",
+    "test": "cargo test"
+  },
+  "author": "zkud",
+  "license": "MIT",
+  "devDependencies": {
+    "cargo-cp-artifact": "^0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rapid-d9t/rapid-cds-parser.git"
+  },
+  "keywords": [
+    "rust",
+    "cds",
+    "rapid"
+  ],
+  "bugs": {
+    "url": "https://github.com/rapid-d9t/rapid-cds-parser/issues"
+  },
+  "homepage": "https://github.com/rapid-d9t/rapid-cds-parser#readme"
+}
