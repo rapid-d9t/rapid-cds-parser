@@ -1,7 +1,8 @@
 # Rapid CDS Parser
-[![ci](https://github.com/zkud/rapid-cds-parser/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/zkud/rapid-cds-parser/actions/workflows/ci.yml)
+[![ci](https://github.com/rapid-d9t/rapid-cds-parser/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/rapid-d9t/rapid-cds-parser/actions/workflows/ci.yml)
+[![Hits-of-Code](https://hitsofcode.com/github/rapid-d9t/rapid-cds-parser?branch=main)](https://hitsofcode.com/github/rapid-d9t/rapid-cds-parser/view?branch=main)
 
-npm module for rapid parsing of cds written in rust as component of [rapidcds extention](https://github.com/zkud/rapidcds)
+npm module for rapid parsing of cds written in rust as component of [rapidcds extention](https://github.com/rapid-d9t/rapidcds)
 
 ## Installing 
 
@@ -32,8 +33,7 @@ After building rapid-cds-parser, you can explore its exports at the Node REPL:
 ```sh
 $ npm install
 $ node
-> require('.').hello()
-"hello node"
+> require('.').transpile()
 ```
 
 ## Available Scripts
@@ -64,6 +64,8 @@ rapid-cds-parser/
 ├── package.json
 ├── src/
 |   └── lib.rs
+|   └── cds.lalrpop
+|   └── ast/
 └── target/
 ```
 
@@ -88,6 +90,14 @@ The npm [manifest file](https://docs.npmjs.com/cli/v7/configuring-npm/package-js
 ### src/
 
 The directory tree containing the Rust source code for the project.
+
+### src/cds.lalrpop
+
+Definitions of cds syntax.
+
+### src/ast
+
+Implementations of cds terms.
 
 ### src/lib.rs
 
