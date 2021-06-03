@@ -3,8 +3,10 @@ use std::io::prelude::*;
 use std::fs::File;
 use std::path::Path;
 
+use lalrpop_util::lalrpop_mod;
+lalrpop_mod!(pub cds);
+
 use super::ast::traits::ast_term::ASTTerm;
-use super::cds;
 
 pub struct Parser {
     path: String,
