@@ -3,9 +3,6 @@ use std::io::prelude::*;
 use std::fs::File;
 use std::path::Path;
 
-use lalrpop_util::lalrpop_mod;
-lalrpop_mod!(pub cds);
-
 use super::ast::traits::ast_term::ASTTerm;
 
 pub struct Parser {
@@ -25,7 +22,7 @@ impl Parser {
         let mut content = String::new();
         file.read_to_string(&mut content).unwrap();
 
-        let module = cds::ModuleParser::new().parse(&content).unwrap();
+        let module = super::cds::ModuleParser::new().parse(&content).unwrap();
 
         module.convert_to_json()
     }
