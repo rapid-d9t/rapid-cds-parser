@@ -4,12 +4,12 @@ pub mod parser;
 use ir::ir_generator::IRGenerator;
 use neon::prelude::*;
 
-fn generate_ir(mut cx: FunctionContext) -> JsResult<JsString> {
+fn generate_ir(mut cx: FunctionContext) -> JsResult<JsObject> {
     let path = cx.argument::<JsString>(0)?.value(&mut cx);
 
     let generator = IRGenerator::new(path);
 
-    Ok(cx.string(generator.generate()))
+    cx.compute_scoped(|mut cx| Ok(generator.generate(&mut cx)))
 }
 
 #[neon::main]

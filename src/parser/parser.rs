@@ -3,7 +3,7 @@ use std::io::prelude::*;
 use std::fs::File;
 use std::path::Path;
 
-use super::ast::traits::ast_term::ASTTerm;
+use super::ast::module_term::ModuleTerm;
 
 pub struct Parser {
     path: String,
@@ -14,7 +14,7 @@ impl Parser {
         Parser { path }
     }
 
-    pub fn parse(&self) -> String {
+    pub fn parse(&self) -> ModuleTerm {
         let path = Path::new(&self.path);
 
         let mut file = File::open(path).unwrap();
@@ -24,6 +24,6 @@ impl Parser {
 
         let module = super::cds::ModuleParser::new().parse(&content).unwrap();
 
-        module.convert_to_json()
+        module
     }
 }

@@ -2,7 +2,10 @@ use super::name_term::NameTerm;
 use super::param_term::ParamTerm;
 use super::returns_term::ReturnsTerm;
 use super::traits::ast_term::ASTTerm;
+use super::traits::service_term_type::ServiceTermType;
 use super::traits::service_usable_term::ServiceUsableTerm;
+use crate::ir::function_ir::FunctionIR;
+use crate::ir::ir_component::IRComponent;
 
 pub struct FunctionTerm {
     name: NameTerm,
@@ -28,10 +31,28 @@ impl FunctionTerm {
     }
 }
 
-impl ServiceUsableTerm for FunctionTerm {}
+impl ServiceUsableTerm for FunctionTerm {
+    fn get_name(&self) -> String {
+        self.name.get_value()
+    }
+
+    fn get_type(&self) -> ServiceTermType {
+        ServiceTermType::Function
+    }
+}
 
 impl ASTTerm for FunctionTerm {
-    fn convert_to_json(&self) -> String {
-        format!("{{ type: \"function\", name: \"{}\" }}", self.get_name())
+    fn generate_ir(&self) -> Box<dyn IRComponent> {
+        let params = self
+            .params
+            .iter()
+            .map(|param| param.generate_ir())
+            .collect();
+
+        Box::new(FunctionIR::new(
+            self.get_name(),
+            params,
+            self.returned_type.generate_ir(),
+        ))
     }
 }

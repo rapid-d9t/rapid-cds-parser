@@ -1,3 +1,5 @@
+use crate::ir::ir_component::IRComponent;
+
 pub trait ASTTerm {
-    fn convert_to_json(&self) -> String;
+    fn generate_ir(&self) -> Box<dyn IRComponent>;
 }

@@ -1,5 +1,8 @@
 use super::traits::ast_term::ASTTerm;
+use super::traits::module_term_type::ModuleTermType;
 use super::traits::module_usable_term::ModuleUsableTerm;
+use crate::ir::ir_component::IRComponent;
+use crate::ir::module_ir::ModuleIR;
 
 pub struct ModuleTerm {
     name: String,
@@ -21,33 +24,31 @@ impl ModuleTerm {
     pub fn set_name(&mut self, new_name: &String) {
         self.name = new_name.clone();
     }
-
-    fn build_definitions_json(&self) -> String {
-        let mut definitions_json = String::new();
-
-        for definition in &self.definitions {
-            definitions_json.push_str("\t");
-            definitions_json.push_str(&definition.convert_to_json());
-            definitions_json.push_str(",\n");
-        }
-
-        definitions_json
-    }
 }
 
 impl ASTTerm for ModuleTerm {
-    fn convert_to_json(&self) -> String {
-        format!(
-            "
-{{
-    type: \"module\",
-    name: \"{}\",
-    declarations: [
-    {}
-    ]
-}}",
-            self.get_name(),
-            self.build_definitions_json(),
-        )
+    fn generate_ir(&self) -> Box<dyn IRComponent> {
+        let entities = self
+            .definitions
+            .iter()
+            .filter(|definition| definition.get_type() == ModuleTermType::Entity)
+            .map(|entity| entity.generate_ir())
+            .collect();
+
+        let types = self
+            .definitions
+            .iter()
+            .filter(|definition| definition.get_type() == ModuleTermType::Type)
+            .map(|cds_type| cds_type.generate_ir())
+            .collect();
+
+        let services = self
+            .definitions
+            .iter()
+            .filter(|definition| definition.get_type() == ModuleTermType::Service)
+            .map(|service| service.generate_ir())
+            .collect();
+
+        Box::new(ModuleIR::new(services, entities, types))
     }
 }
