@@ -9,7 +9,7 @@ fn generate_ir(mut cx: FunctionContext) -> JsResult<JsObject> {
 
     let generator = IRGenerator::new(path);
 
-    cx.compute_scoped(|mut cx| Ok(generator.generate(&mut cx)))
+    cx.compute_scoped(|mut cx| generator.generate(&mut cx))
 }
 
 #[neon::main]
