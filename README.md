@@ -33,7 +33,7 @@ After building rapid-cds-parser, you can explore its exports at the Node REPL:
 ```sh
 $ npm install
 $ node
-> require('.').transpile()
+> require('.').generate_ir('test.cds')
 ```
 
 ## Available Scripts
@@ -64,8 +64,8 @@ rapid-cds-parser/
 ├── package.json
 ├── src/
 |   └── lib.rs
-|   └── cds.lalrpop
-|   └── ast/
+|   └── parser/
+|   └── ir/
 └── target/
 ```
 
@@ -91,13 +91,13 @@ The npm [manifest file](https://docs.npmjs.com/cli/v7/configuring-npm/package-js
 
 The directory tree containing the Rust source code for the project.
 
-### src/cds.lalrpop
+### src/parser/
 
-Definitions of cds syntax.
+Implementation of a cds languages parser with lalrpop
 
-### src/ast
+### src/ir/
 
-Implementations of cds terms.
+Implementation of **i**ntermediate **r**epresentation generation from the AST parser produces
 
 ### src/lib.rs
 
