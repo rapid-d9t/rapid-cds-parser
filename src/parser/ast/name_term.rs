@@ -1,5 +1,3 @@
-use super::traits::ast_term::ASTTerm;
-
 pub struct NameTerm {
     value: String,
 }
