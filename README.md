@@ -67,6 +67,7 @@ rapid-cds-parser/
 |   └── lib.rs
 |   └── parser/
 |   └── ir/
+├── tests/
 └── target/
 ```
 
@@ -94,15 +95,19 @@ The directory tree containing the Rust source code for the project.
 
 ### src/parser/
 
-Implementation of a cds languages parser with lalrpop
+Implementation of a cds languages parser with lalrpop.
 
 ### src/ir/
 
-Implementation of **i**ntermediate **r**epresentation generation from the AST parser produces
+Implementation of **i**ntermediate **r**epresentation generation from the AST parser produces.
 
 ### src/lib.rs
 
 The Rust library's main module.
+
+### tests/
+
+Implementation of library's integration tests.
 
 ### target/
 
