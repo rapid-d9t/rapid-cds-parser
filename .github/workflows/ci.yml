@@ -35,6 +35,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build
       run: npm i
+    - name: Check tests
+      run: npm run integration-test-lint
     - name: Run Tests
       run: npm run integration-test
       

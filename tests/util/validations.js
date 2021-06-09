@@ -10,7 +10,6 @@ function servicesAreCorrect(services) {
   return services.every((service) => isCorrectService(service));
 }
 
-
 /**
  * @param {object} service Service to inspect
  * @param {string} service.name Service's name

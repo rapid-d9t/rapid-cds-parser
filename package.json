@@ -7,12 +7,15 @@
     "build": "cargo-cp-artifact -nc index.node -- cargo build --message-format=json-render-diagnostics",
     "install": "npm run build",
     "test": "cargo test",
+    "integration-test-lint": "eslint ./tests/*",
     "integration-test": "jest"
   },
   "author": "zkud",
   "license": "MIT",
   "devDependencies": {
     "cargo-cp-artifact": "^0.1",
+    "eslint": "^7.28.0",
+    "eslint-config-google": "^0.14.0",
     "jest": "^27.0"
   },
   "repository": {
