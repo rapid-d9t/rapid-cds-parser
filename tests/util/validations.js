@@ -1,6 +1,6 @@
 /**
  * @param {Array<object>} services Services IR objects
- * @returns {boolean} All services are correct
+ * @return {boolean} All services are correct
  */
 function servicesAreCorrect(services) {
   if (!isArray(services)) {
@@ -16,25 +16,25 @@ function servicesAreCorrect(services) {
  * @param {Array<object>} service.entities Service's entities
  * @param {Array<object>} service.actions Service's actions
  * @param {Array<object>} service.functions Service's functions
- * @returns {boolean} Service is correct
+ * @return {boolean} Service is correct
  */
 function isCorrectService({
   name,
   entities,
   actions,
-  functions
+  functions,
 }) {
   return !!(
-    name
-    && entitiesAreCorrect(entities)
-    && isArray(actions)
-    && isArray(functions)
+    name &&
+    entitiesAreCorrect(entities) &&
+    isArray(actions) &&
+    isArray(functions)
   );
 }
 
 /**
  * @param {Array<object>} entities Entities IR objects
- * @returns {boolean} All entities are correct
+ * @return {boolean} All entities are correct
  */
 function entitiesAreCorrect(entities) {
   if (!isArray(entities)) {
@@ -50,25 +50,25 @@ function entitiesAreCorrect(entities) {
  * @param {boolean} entity.isProjection Entity's is projection flag
  * @param {Array<object>} entity.aspects Entity's applied aspects
  * @param {Array<object>} entity.fields Entity's fields
- * @returns {boolean} Entity is correct
+ * @return {boolean} Entity is correct
  */
 function isCorrectEntity({
   name,
   isProjection,
   aspects,
-  fields
+  fields,
 }) {
   return !!(
-    name
-    && (isProjection === true || isProjection === false)
-    && isArray(aspects)
-    && isArray(fields)
+    name &&
+    (isProjection === true || isProjection === false) &&
+    isArray(aspects) &&
+    isArray(fields)
   );
 }
 
 /**
  * @param {object} value Value to inspect
- * @returns {boolean} Looks like an array
+ * @return {boolean} Looks like an array
  */
 function isArray(value) {
   return !value || typeof value !== 'array';
