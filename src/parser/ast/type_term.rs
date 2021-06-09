@@ -50,3 +50,34 @@ impl ASTTerm for TypeTerm {
         Box::new(TypeIR::new(self.get_name(), self.get_resolved_type_name()))
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::TypeTerm;
+    use crate::parser::ast::name_term::NameTerm;
+
+    use crate::parser::ast::traits::service_term_type::ServiceTermType;
+    use crate::parser::ast::traits::service_usable_term::ServiceUsableTerm;
+
+    #[test]
+    fn it_inits() {
+        let term = TypeTerm::new(
+            NameTerm::new("test".to_string()),
+            NameTerm::new("TestType".to_string()),
+        );
+
+        assert_eq!(term.get_name(), "test");
+        assert_eq!(term.get_resolved_type_name(), "TestType");
+    }
+
+    #[test]
+    fn it_implements_service_usable_term_trait() {
+        let term: Box<dyn ServiceUsableTerm> = Box::new(TypeTerm::new(
+            NameTerm::new("test".to_string()),
+            NameTerm::new("TestType".to_string()),
+        ));
+
+        assert_eq!(term.get_name(), "test");
+        assert_eq!(term.get_type(), ServiceTermType::Type);
+    }
+}

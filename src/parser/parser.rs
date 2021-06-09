@@ -76,7 +76,7 @@ mod tests {
     }
 
     #[test]
-    fn with_syntactically_incorrect_if_fails() {
+    fn with_syntactically_incorrect_it_fails() {
         let mut test_file = File::create("test_incorrect.cds").unwrap();
         test_file
             .write_all(
