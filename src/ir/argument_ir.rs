@@ -1,5 +1,6 @@
 use super::ir_component::IRComponent;
 use super::ir_error::IRError;
+use super::js_context::JsContext;
 use neon::prelude::*;
 
 pub struct ArgumentIR {
@@ -11,7 +12,7 @@ pub struct ArgumentIR {
 impl IRComponent for ArgumentIR {
     fn assign_object_properties<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         argument_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
         self.assign_name(&mut *cx, argument_object)?;
@@ -24,31 +25,31 @@ impl IRComponent for ArgumentIR {
 impl ArgumentIR {
     fn assign_name<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         argument_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
-        let name = cx.string(self.name.clone());
-        argument_object.set(&mut *cx, "name", name)?;
+        let name = cx.create_string(self.name.clone());
+        cx.assing_field_to_object(argument_object, "name", name)?;
         Ok(())
     }
 
     fn assign_argument_type<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         argument_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
-        let argument_type = cx.string(self.argument_type.clone());
-        argument_object.set(&mut *cx, "type", argument_type)?;
+        let argument_type = cx.create_string(self.argument_type.clone());
+        cx.assing_field_to_object(argument_object, "type", argument_type)?;
         Ok(())
     }
 
     fn assign_is_arrayed<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         argument_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
-        let is_arrayed = cx.boolean(self.is_arrayed);
-        argument_object.set(&mut *cx, "isArrayed", is_arrayed)?;
+        let is_arrayed = cx.create_bool(self.is_arrayed);
+        cx.assing_field_to_object(argument_object, "type", is_arrayed)?;
         Ok(())
     }
 

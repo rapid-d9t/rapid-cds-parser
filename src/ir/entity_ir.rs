@@ -1,5 +1,6 @@
 use super::ir_component::IRComponent;
 use super::ir_error::IRError;
+use super::js_context::JsContext;
 use neon::prelude::*;
 
 pub struct EntityIR {
@@ -12,7 +13,7 @@ pub struct EntityIR {
 impl IRComponent for EntityIR {
     fn assign_object_properties<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         entity_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
         self.assign_name(&mut *cx, entity_object)?;
@@ -26,30 +27,30 @@ impl IRComponent for EntityIR {
 impl EntityIR {
     fn assign_name<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         entity_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
-        let name = cx.string(self.name.clone());
-        entity_object.set(&mut *cx, "name", name)?;
+        let name = cx.create_string(self.name.clone());
+        cx.assing_field_to_object(entity_object, "name", name)?;
         Ok(())
     }
 
     fn assign_is_projection_on<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         entity_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
         match &self.is_projection_on {
             Some(name) => {
-                let is_projection = cx.boolean(true);
-                entity_object.set(&mut *cx, "isProjection", is_projection)?;
+                let is_projection = cx.create_bool(true);
+                cx.assing_field_to_object(entity_object, "isProjection", is_projection)?;
 
-                let is_projection_on = cx.string(name);
-                entity_object.set(&mut *cx, "isProjectionOn", is_projection_on)?;
+                let is_projection_on = cx.create_string(name.clone());
+                cx.assing_field_to_object(entity_object, "isProjectionOn", is_projection_on)?;
             }
             None => {
-                let is_projection = cx.boolean(false);
-                entity_object.set(&mut *cx, "isProjection", is_projection)?;
+                let is_projection = cx.create_bool(false);
+                cx.assing_field_to_object(entity_object, "isProjection", is_projection)?;
             }
         }
 
@@ -58,32 +59,32 @@ impl EntityIR {
 
     fn assign_aspects<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         entity_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
-        let aspects = JsArray::new(&mut *cx, self.aspects.len() as u32);
-        entity_object.set(&mut *cx, "aspects", aspects)?;
+        let aspects: Vec<_> = self
+            .aspects
+            .iter()
+            .map(|aspect| cx.create_string(aspect.clone()))
+            .collect();
 
-        for (index, aspect_name) in (&self.aspects).iter().enumerate() {
-            let aspect_name = cx.string(aspect_name);
-            aspects.set(&mut *cx, index as u32, aspect_name)?;
-        }
+        cx.assing_array_field_to_object(entity_object, "aspects", aspects)?;
 
         Ok(())
     }
 
     fn assign_fields<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         entity_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
-        let fields = JsArray::new(&mut *cx, self.fields.len() as u32);
-        entity_object.set(&mut *cx, "fields", fields)?;
+        let fields: Vec<_> = self
+            .fields
+            .iter()
+            .map(|field| field.to_js_object(&mut *cx))
+            .collect();
 
-        for (index, field) in (&self.fields).iter().enumerate() {
-            let field = field.to_js_object(&mut *cx)?;
-            fields.set(&mut *cx, index as u32, field)?;
-        }
+        cx.assing_failable_array_field_to_object(entity_object, "fields", fields)?;
 
         Ok(())
     }

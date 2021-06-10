@@ -8,6 +8,7 @@ pub mod function_ir;
 pub mod ir_component;
 pub mod ir_error;
 pub mod ir_generator;
+pub mod js_context;
 pub mod module_ir;
 pub mod output_ir;
 pub mod service_ir;

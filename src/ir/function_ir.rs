@@ -1,5 +1,6 @@
 use super::ir_component::IRComponent;
 use super::ir_error::IRError;
+use super::js_context::JsContext;
 use neon::prelude::*;
 
 pub struct FunctionIR {
@@ -11,7 +12,7 @@ pub struct FunctionIR {
 impl IRComponent for FunctionIR {
     fn assign_object_properties<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         function_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
         self.assign_name(&mut *cx, function_object)?;
@@ -24,37 +25,37 @@ impl IRComponent for FunctionIR {
 impl FunctionIR {
     fn assign_name<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         function_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
-        let name = cx.string(self.name.clone());
-        function_object.set(&mut *cx, "name", name)?;
+        let name = cx.create_string(self.name.clone());
+        cx.assing_field_to_object(function_object, "name", name)?;
         Ok(())
     }
 
     fn assign_arguments<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         function_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
-        let arguments = JsArray::new(&mut *cx, self.arguments.len() as u32);
-        function_object.set(&mut *cx, "arguments", arguments)?;
+        let arguments: Vec<_> = self
+            .arguments
+            .iter()
+            .map(|argument| argument.to_js_object(&mut *cx))
+            .collect();
 
-        for (index, argument) in (&self.arguments).iter().enumerate() {
-            let argument = argument.to_js_object(&mut *cx)?;
-            arguments.set(&mut *cx, index as u32, argument)?;
-        }
+        cx.assing_failable_array_field_to_object(function_object, "arguments", arguments)?;
 
         Ok(())
     }
 
     fn assign_output<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         function_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
         let output = self.output.to_js_object(&mut *cx)?;
-        function_object.set(&mut *cx, "output", output)?;
+        cx.assing_field_to_object(function_object, "output", output)?;
         Ok(())
     }
 

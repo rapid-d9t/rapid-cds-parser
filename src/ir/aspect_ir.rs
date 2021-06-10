@@ -1,5 +1,6 @@
 use super::ir_component::IRComponent;
 use super::ir_error::IRError;
+use super::js_context::JsContext;
 use neon::prelude::*;
 
 pub struct AspectIR {
@@ -10,7 +11,7 @@ pub struct AspectIR {
 impl IRComponent for AspectIR {
     fn assign_object_properties<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         aspect_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
         self.assign_name(&mut *cx, aspect_object)?;
@@ -22,26 +23,26 @@ impl IRComponent for AspectIR {
 impl AspectIR {
     fn assign_name<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         aspect_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
-        let name = cx.string(self.name.clone());
-        aspect_object.set(&mut *cx, "name", name)?;
+        let name = cx.create_string(self.name.clone());
+        cx.assing_field_to_object(aspect_object, "name", name)?;
         Ok(())
     }
 
     fn assign_fields<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         aspect_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
-        let fields = JsArray::new(&mut *cx, self.fields.len() as u32);
-        aspect_object.set(&mut *cx, "fields", fields)?;
+        let fields: Vec<_> = self
+            .fields
+            .iter()
+            .map(|field| field.to_js_object(&mut *cx))
+            .collect();
 
-        for (index, field) in (&self.fields).iter().enumerate() {
-            let field = field.to_js_object(&mut *cx)?;
-            fields.set(&mut *cx, index as u32, field)?;
-        }
+        cx.assing_failable_array_field_to_object(aspect_object, "fields", fields)?;
 
         Ok(())
     }

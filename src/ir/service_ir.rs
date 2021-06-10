@@ -1,5 +1,6 @@
 use super::ir_component::IRComponent;
 use super::ir_error::IRError;
+use super::js_context::JsContext;
 use neon::prelude::*;
 
 pub struct ServiceIR {
@@ -12,7 +13,7 @@ pub struct ServiceIR {
 impl IRComponent for ServiceIR {
     fn assign_object_properties<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         service_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
         self.assign_name(&mut *cx, service_object)?;
@@ -26,58 +27,58 @@ impl IRComponent for ServiceIR {
 impl ServiceIR {
     fn assign_name<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         service_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
-        let name = cx.string(self.name.clone());
-        service_object.set(&mut *cx, "name", name)?;
+        let name = cx.create_string(self.name.clone());
+        cx.assing_field_to_object(service_object, "name", name)?;
         Ok(())
     }
 
     fn assign_entities<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         service_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
-        let entities = JsArray::new(&mut *cx, self.entities.len() as u32);
-        service_object.set(&mut *cx, "entities", entities)?;
+        let entities: Vec<_> = self
+            .entities
+            .iter()
+            .map(|entity| entity.to_js_object(&mut *cx))
+            .collect();
 
-        for (index, entity) in (&self.entities).iter().enumerate() {
-            let entity = entity.to_js_object(&mut *cx)?;
-            entities.set(&mut *cx, index as u32, entity)?;
-        }
+        cx.assing_failable_array_field_to_object(service_object, "entities", entities)?;
 
         Ok(())
     }
 
     fn assign_actions<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         service_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
-        let actions = JsArray::new(&mut *cx, self.actions.len() as u32);
-        service_object.set(&mut *cx, "actions", actions)?;
+        let actions: Vec<_> = self
+            .actions
+            .iter()
+            .map(|action| action.to_js_object(&mut *cx))
+            .collect();
 
-        for (index, action) in (&self.actions).iter().enumerate() {
-            let action = action.to_js_object(&mut *cx)?;
-            actions.set(&mut *cx, index as u32, action)?;
-        }
+        cx.assing_failable_array_field_to_object(service_object, "actions", actions)?;
 
         Ok(())
     }
 
     fn assign_functions<'internal, 'outer>(
         &self,
-        cx: &mut ComputeContext<'internal, 'outer>,
+        cx: &mut JsContext<'internal, 'outer>,
         service_object: &mut neon::handle::Handle<'internal, JsObject>,
     ) -> Result<(), IRError> {
-        let functions = JsArray::new(&mut *cx, self.functions.len() as u32);
-        service_object.set(&mut *cx, "functions", functions)?;
+        let functions: Vec<_> = self
+            .functions
+            .iter()
+            .map(|function| function.to_js_object(&mut *cx))
+            .collect();
 
-        for (index, function) in (&self.functions).iter().enumerate() {
-            let function = function.to_js_object(&mut *cx)?;
-            functions.set(&mut *cx, index as u32, function)?;
-        }
+        cx.assing_failable_array_field_to_object(service_object, "functions", functions)?;
 
         Ok(())
     }

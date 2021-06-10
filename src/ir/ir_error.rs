@@ -1,7 +1,7 @@
 use neon::result::Throw;
 use std::fmt;
 
-#[derive(fmt::Debug)]
+#[derive(fmt::Debug, Clone)]
 pub struct IRError {
     error_type: IRErrorType,
     message: String,
