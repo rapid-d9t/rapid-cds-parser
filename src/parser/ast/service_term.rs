@@ -5,7 +5,7 @@ use super::traits::module_usable_term::ModuleUsableTerm;
 use super::traits::service_term_type::ServiceTermType;
 use super::traits::service_usable_term::ServiceUsableTerm;
 use crate::ir::ir_component::IRComponent;
-use crate::ir::service_ir::ServiceIR;
+use std::collections::HashMap;
 
 pub struct ServiceTerm {
     name: NameTerm,
@@ -29,7 +29,7 @@ impl ModuleUsableTerm for ServiceTerm {
 }
 
 impl ASTTerm for ServiceTerm {
-    fn generate_ir(&self) -> Box<dyn IRComponent> {
+    fn generate_ir(&self) -> Box<IRComponent> {
         let entities = self
             .definitions
             .iter()
@@ -51,12 +51,22 @@ impl ASTTerm for ServiceTerm {
             .map(|function| function.generate_ir())
             .collect();
 
-        Box::new(ServiceIR::new(
-            self.get_name(),
-            entities,
-            actions,
-            functions,
-        ))
+        let mut fields = HashMap::<String, Box<IRComponent>>::new();
+        fields.insert("name".to_string(), self.name.generate_ir());
+        fields.insert(
+            "entities".to_string(),
+            Box::new(IRComponent::new_array(entities)),
+        );
+        fields.insert(
+            "actions".to_string(),
+            Box::new(IRComponent::new_array(actions)),
+        );
+        fields.insert(
+            "functions".to_string(),
+            Box::new(IRComponent::new_array(functions)),
+        );
+
+        Box::new(IRComponent::new_object(fields))
     }
 }
 
@@ -65,8 +75,6 @@ mod tests {
     use super::ServiceTerm;
     use crate::parser::ast::entity_term::EntityTerm;
     use crate::parser::ast::name_term::NameTerm;
-
-    use crate::parser::ast::traits::service_usable_term::ServiceUsableTerm;
 
     use crate::parser::ast::traits::module_term_type::ModuleTermType;
     use crate::parser::ast::traits::module_usable_term::ModuleUsableTerm;
@@ -82,7 +90,7 @@ mod tests {
     }
 
     #[test]
-    fn it_implements_service_usable_term_trait() {
+    fn it_implements_module_usable_term_trait() {
         let service_name = NameTerm::new("Test".to_string());
         let entity_name = NameTerm::new("TestEntity".to_string());
         let entity = EntityTerm::new(entity_name, Vec::new(), Vec::new());

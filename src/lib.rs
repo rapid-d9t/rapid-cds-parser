@@ -5,12 +5,12 @@ use ir::ir_generator::IRGenerator;
 use ir::js_context::JsContext;
 use neon::prelude::*;
 
-fn generate_ir(mut cx: FunctionContext) -> JsResult<JsObject> {
+fn generate_ir(mut cx: FunctionContext) -> JsResult<JsValue> {
     let path = cx.argument::<JsString>(0)?.value(&mut cx);
 
     let generator = IRGenerator::new(path);
 
-    cx.compute_scoped(|mut cx| {
+    cx.compute_scoped(|cx| {
         let mut context = JsContext::new(cx);
         generator.generate(&mut context)
     })

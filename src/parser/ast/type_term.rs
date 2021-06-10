@@ -5,7 +5,7 @@ use super::traits::module_usable_term::ModuleUsableTerm;
 use super::traits::service_term_type::ServiceTermType;
 use super::traits::service_usable_term::ServiceUsableTerm;
 use crate::ir::ir_component::IRComponent;
-use crate::ir::type_ir::TypeIR;
+use std::collections::HashMap;
 
 pub struct TypeTerm {
     name: NameTerm,
@@ -46,8 +46,15 @@ impl ServiceUsableTerm for TypeTerm {
 }
 
 impl ASTTerm for TypeTerm {
-    fn generate_ir(&self) -> Box<dyn IRComponent> {
-        Box::new(TypeIR::new(self.get_name(), self.get_resolved_type_name()))
+    fn generate_ir(&self) -> Box<IRComponent> {
+        let mut fields = HashMap::<String, Box<IRComponent>>::new();
+        fields.insert("name".to_string(), self.name.generate_ir());
+        fields.insert(
+            "resolvesTo".to_string(),
+            self.resolved_type_name.generate_ir(),
+        );
+
+        Box::new(IRComponent::new_object(fields))
     }
 }
 

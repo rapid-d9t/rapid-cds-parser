@@ -1,7 +1,7 @@
 use super::name_term::NameTerm;
 use super::traits::ast_term::ASTTerm;
 use crate::ir::ir_component::IRComponent;
-use crate::ir::output_ir::OutputIR;
+use std::collections::HashMap;
 
 pub struct ReturnsTerm {
     type_name: NameTerm,
@@ -29,7 +29,14 @@ impl ReturnsTerm {
 }
 
 impl ASTTerm for ReturnsTerm {
-    fn generate_ir(&self) -> Box<dyn IRComponent> {
-        Box::new(OutputIR::new(self.get_type_name(), self.is_arrayed))
+    fn generate_ir(&self) -> Box<IRComponent> {
+        let mut fields = HashMap::<String, Box<IRComponent>>::new();
+        fields.insert("type".to_string(), self.type_name.generate_ir());
+        fields.insert(
+            "isArrayed".to_string(),
+            Box::new(IRComponent::new_bool(false)),
+        );
+
+        Box::new(IRComponent::new_object(fields))
     }
 }
