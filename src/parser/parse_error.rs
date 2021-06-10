@@ -7,7 +7,7 @@ pub struct ParseError {
     message: String,
 }
 
-#[derive(fmt::Debug, Clone)]
+#[derive(fmt::Debug, Clone, PartialEq)]
 pub enum ParseErrorType {
     FileIOError,
     SyntaxError,
