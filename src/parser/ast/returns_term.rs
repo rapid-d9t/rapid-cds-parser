@@ -30,7 +30,7 @@ impl ASTTerm for ReturnsTerm {
         fields.insert("type".to_string(), self.type_name.generate_ir());
         fields.insert(
             "isArrayed".to_string(),
-            Box::new(IRComponent::new_bool(false)),
+            Box::new(IRComponent::new_bool(self.is_arrayed)),
         );
 
         Box::new(IRComponent::new_object(fields))
