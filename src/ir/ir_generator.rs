@@ -4,10 +4,12 @@ use crate::parser::ast::traits::ast_term::ASTTerm;
 use crate::parser::parser::Parser;
 use neon::prelude::*;
 
+#[cfg(not(tarpaulin_include))]
 pub struct IRGenerator {
     parser: Parser,
 }
 
+#[cfg(not(tarpaulin_include))]
 impl IRGenerator {
     pub fn new(src_path: String) -> IRGenerator {
         IRGenerator {

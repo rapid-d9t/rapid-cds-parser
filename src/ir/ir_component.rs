@@ -4,6 +4,7 @@ use neon::prelude::*;
 use std::collections::HashMap;
 
 #[derive(std::fmt::Debug)]
+#[cfg(not(tarpaulin_include))]
 pub enum IRComponent {
     Object {
         fields: HashMap<String, Box<IRComponent>>,
@@ -14,6 +15,7 @@ pub enum IRComponent {
     Array(Vec<Box<IRComponent>>),
 }
 
+#[cfg(not(tarpaulin_include))]
 impl IRComponent {
     pub fn to_js_value<'internal, 'outer>(
         &self,

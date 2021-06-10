@@ -5,6 +5,7 @@ use ir::ir_generator::IRGenerator;
 use ir::js_context::JsContext;
 use neon::prelude::*;
 
+#[cfg(not(tarpaulin_include))]
 fn generate_ir(mut cx: FunctionContext) -> JsResult<JsValue> {
     let path = cx.argument::<JsString>(0)?.value(&mut cx);
 
@@ -17,6 +18,7 @@ fn generate_ir(mut cx: FunctionContext) -> JsResult<JsValue> {
 }
 
 #[neon::main]
+#[cfg(not(tarpaulin_include))]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("generate_ir", generate_ir)?;
     Ok(())

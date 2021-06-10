@@ -1,10 +1,12 @@
 use super::ir_error::IRError;
 use neon::prelude::*;
 
+#[cfg(not(tarpaulin_include))]
 pub struct JsContext<'internal, 'outer> {
     cx: ComputeContext<'internal, 'outer>,
 }
 
+#[cfg(not(tarpaulin_include))]
 impl<'internal, 'outer> JsContext<'internal, 'outer> {
     pub fn new(cx: ComputeContext<'internal, 'outer>) -> JsContext<'internal, 'outer> {
         JsContext { cx }
