@@ -77,7 +77,13 @@ mod tests {
         let file_error = ParseError::new("file error".to_string(), ParseErrorType::FileIOError);
         let syntax_error = ParseError::new("syntax error".to_string(), ParseErrorType::SyntaxError);
 
-        assert_eq!(format!("{}", file_error), "parse error FileIOError, reason: file error");
-        assert_eq!(format!("{}", syntax_error), "parse error SyntaxError, reason: syntax error");
+        assert_eq!(
+            format!("{}", file_error),
+            "parse error FileIOError, reason: file error"
+        );
+        assert_eq!(
+            format!("{}", syntax_error),
+            "parse error SyntaxError, reason: syntax error"
+        );
     }
 }
