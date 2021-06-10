@@ -1,16 +1,16 @@
-use crate::ast::traits::service_usable_term::ServiceUsableTerm;
-use crate::ast::traits::module_usable_term::ModuleUsableTerm;
-use crate::ast::traits::ast_term::ASTTerm;
-use crate::ast::name_term::NameTerm;
-use crate::ast::type_term::TypeTerm;
-use crate::ast::param_term::ParamTerm;
-use crate::ast::returns_term::ReturnsTerm;
-use crate::ast::field_term::FieldTerm;
-use crate::ast::function_term::FunctionTerm;
-use crate::ast::action_term::ActionTerm;
-use crate::ast::entity_term::EntityTerm;
-use crate::ast::service_term::ServiceTerm;
-use crate::ast::module_term::ModuleTerm;
+use crate::parser::ast::traits::service_usable_term::ServiceUsableTerm;
+use crate::parser::ast::traits::module_usable_term::ModuleUsableTerm;
+use crate::parser::ast::traits::ast_term::ASTTerm;
+use crate::parser::ast::name_term::NameTerm;
+use crate::parser::ast::type_term::TypeTerm;
+use crate::parser::ast::param_term::ParamTerm;
+use crate::parser::ast::returns_term::ReturnsTerm;
+use crate::parser::ast::field_term::FieldTerm;
+use crate::parser::ast::function_term::FunctionTerm;
+use crate::parser::ast::action_term::ActionTerm;
+use crate::parser::ast::entity_term::EntityTerm;
+use crate::parser::ast::service_term::ServiceTerm;
+use crate::parser::ast::module_term::ModuleTerm;
 
 grammar;
 
@@ -58,17 +58,11 @@ ModuleDefinitions: Vec<Box<dyn ModuleUsableTerm>> = {
 
 Service: ServiceTerm = {
     "service" <name:Name> "{" "}" => {
-        ServiceTerm::new(name, Vec::new(), Vec::new())
+        ServiceTerm::new(name, Vec::new())
     },
     "service" <name:Name> "{" <definitions:ServiceDefinitions> "}" => {
-        ServiceTerm::new(name, Vec::new(), definitions)
+        ServiceTerm::new(name, definitions)
     },
-    "service" <name:Name> ":" <aspects:AspectNames> "{" "}" => {
-        ServiceTerm::new(name, aspects, Vec::new())
-    },
-    "service" <name:Name> ":" <aspects:AspectNames> "{" <definitions:ServiceDefinitions> "}" => {
-        ServiceTerm::new(name, aspects, definitions)
-    }
 }
 
 ServiceDefinitions: Vec<Box<dyn ServiceUsableTerm>> = {

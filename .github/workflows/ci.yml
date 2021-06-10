@@ -14,17 +14,31 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build
-      run: cargo build --verbose
+      run: npm i
     
-  test:
-    name: Test
+  unit-test:
+    name: Unit Tests
     
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    - name: Unit
-      run: cargo test --verbose
+    - name: Run Tests
+      run: npm test
+
+  integration-test:
+    name: Integration Tests
+    
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build
+      run: npm i
+    - name: Check tests
+      run: npm run integration-test-lint
+    - name: Run Tests
+      run: npm run integration-test
       
   lint:
     name: Lint
@@ -38,8 +52,40 @@ jobs:
         rustup component add rustfmt
         rustfmt --version
     - name: Lint
-      run: rustfmt ./src/main.rs --check
+      run: rustfmt ./src/lib.rs --check
+  
+  code-cov:
+    name: Code Coverage
+    
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Run cargo-tarpaulin
+        uses: actions-rs/tarpaulin@v0.1
+        with:
+          version: '0.15.0'
+          args: '--ignore-tests -- --test-threads 1'
+
+      - name: Upload to codecov.io
+        uses: codecov/codecov-action@v1.0.2
+        with:
+          token: ${{secrets.CODECOV_TOKEN}}
+
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v1
+        with:
+          name: code-coverage-report
+          path: cobertura.xml
+  
   code-scan:
     name: Code Scan
 
