@@ -16,15 +16,29 @@ jobs:
     - name: Build
       run: npm i
     
-  test:
-    name: Test
+  unit-test:
+    name: Unit Tests
     
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    - name: Unit
+    - name: Run Tests
       run: npm test
+
+  integration-test:
+    name: Integration Tests
+    
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build
+      run: npm i
+    - name: Check tests
+      run: npm run integration-test-lint
+    - name: Run Tests
+      run: npm run integration-test
       
   lint:
     name: Lint
@@ -59,7 +73,7 @@ jobs:
         uses: actions-rs/tarpaulin@v0.1
         with:
           version: '0.15.0'
-          args: '-- --test-threads 1'
+          args: '--ignore-tests -- --test-threads 1'
 
       - name: Upload to codecov.io
         uses: codecov/codecov-action@v1.0.2

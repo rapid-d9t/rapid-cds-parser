@@ -58,17 +58,11 @@ ModuleDefinitions: Vec<Box<dyn ModuleUsableTerm>> = {
 
 Service: ServiceTerm = {
     "service" <name:Name> "{" "}" => {
-        ServiceTerm::new(name, Vec::new(), Vec::new())
+        ServiceTerm::new(name, Vec::new())
     },
     "service" <name:Name> "{" <definitions:ServiceDefinitions> "}" => {
-        ServiceTerm::new(name, Vec::new(), definitions)
+        ServiceTerm::new(name, definitions)
     },
-    "service" <name:Name> ":" <aspects:AspectNames> "{" "}" => {
-        ServiceTerm::new(name, aspects, Vec::new())
-    },
-    "service" <name:Name> ":" <aspects:AspectNames> "{" <definitions:ServiceDefinitions> "}" => {
-        ServiceTerm::new(name, aspects, definitions)
-    }
 }
 
 ServiceDefinitions: Vec<Box<dyn ServiceUsableTerm>> = {
