@@ -10,9 +10,7 @@ pub struct ModuleTerm {
 
 impl ModuleTerm {
     pub fn new(definitions: Vec<Box<dyn ModuleUsableTerm>>) -> ModuleTerm {
-        ModuleTerm {
-            definitions,
-        }
+        ModuleTerm { definitions }
     }
 }
 
