@@ -3,6 +3,7 @@ use super::js_context::JsContext;
 use neon::prelude::*;
 use std::collections::HashMap;
 
+#[derive(std::fmt::Debug)]
 pub enum IRComponent {
     Object {
         fields: HashMap<String, Box<IRComponent>>,

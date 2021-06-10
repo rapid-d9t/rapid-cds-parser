@@ -40,11 +40,15 @@ impl Parser {
 
 #[cfg(test)]
 mod tests {
+    use assert_matches::assert_matches;
+
     use std::fs::remove_file;
     use std::fs::File;
     use std::io::prelude::*;
 
     use super::Parser;
+    use crate::parser::ast::traits::ast_term::ASTTerm;
+    use crate::ir::ir_component::IRComponent;
 
     #[test]
     fn with_correct_input_it_translates() {
@@ -61,11 +65,14 @@ mod tests {
             )
             .unwrap();
 
-        let result = Parser::new("test_correct.cds".to_string()).parse();
+        let result = Parser::new("test_correct.cds".to_string())
+            .parse()
+            .unwrap()
+            .generate_ir();
 
         remove_file("test_correct.cds").unwrap();
 
-        assert!(result.is_ok());
+        assert_matches!(*result, IRComponent::Object { fields });
     }
 
     #[test]
