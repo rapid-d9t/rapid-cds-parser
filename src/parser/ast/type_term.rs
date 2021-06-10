@@ -19,14 +19,6 @@ impl TypeTerm {
             resolved_type_name,
         }
     }
-
-    pub fn get_name(&self) -> String {
-        self.name.get_value()
-    }
-
-    pub fn get_resolved_type_name(&self) -> String {
-        self.resolved_type_name.get_value()
-    }
 }
 
 impl ModuleUsableTerm for TypeTerm {
@@ -73,8 +65,8 @@ mod tests {
             NameTerm::new("TestType".to_string()),
         );
 
-        assert_eq!(term.get_name(), "test");
-        assert_eq!(term.get_resolved_type_name(), "TestType");
+        assert_eq!(term.name.get_value(), "test");
+        assert_eq!(term.resolved_type_name.get_value(), "TestType");
     }
 
     #[test]

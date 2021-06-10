@@ -16,10 +16,6 @@ impl ServiceTerm {
     pub fn new(name: NameTerm, definitions: Vec<Box<dyn ServiceUsableTerm>>) -> ServiceTerm {
         ServiceTerm { name, definitions }
     }
-
-    pub fn get_name(&self) -> String {
-        self.name.get_value()
-    }
 }
 
 impl ModuleUsableTerm for ServiceTerm {
@@ -86,7 +82,7 @@ mod tests {
         let entity = EntityTerm::new(entity_name, Vec::new(), Vec::new());
         let term = ServiceTerm::new(service_name, vec![Box::new(entity)]);
 
-        assert_eq!(term.get_name(), "Test");
+        assert_eq!(term.name.get_value(), "Test");
     }
 
     #[test]

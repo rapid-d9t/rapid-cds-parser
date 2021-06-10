@@ -26,10 +26,6 @@ impl EntityTerm {
             fields,
         }
     }
-
-    pub fn get_name(&self) -> String {
-        self.name.get_value()
-    }
 }
 
 impl ModuleUsableTerm for EntityTerm {

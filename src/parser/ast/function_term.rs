@@ -21,14 +21,6 @@ impl FunctionTerm {
             returned_type,
         }
     }
-
-    pub fn get_name(&self) -> String {
-        self.name.get_value()
-    }
-
-    pub fn get_returned_type_name(&self) -> String {
-        self.returned_type.get_type_name()
-    }
 }
 
 impl ServiceUsableTerm for FunctionTerm {

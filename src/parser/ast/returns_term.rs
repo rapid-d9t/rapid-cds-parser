@@ -22,10 +22,6 @@ impl ReturnsTerm {
             is_arrayed: true,
         }
     }
-
-    pub fn get_type_name(&self) -> String {
-        self.type_name.get_value()
-    }
 }
 
 impl ASTTerm for ReturnsTerm {

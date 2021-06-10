@@ -5,24 +5,14 @@ use crate::ir::ir_component::IRComponent;
 use std::collections::HashMap;
 
 pub struct ModuleTerm {
-    name: String,
     definitions: Vec<Box<dyn ModuleUsableTerm>>,
 }
 
 impl ModuleTerm {
     pub fn new(definitions: Vec<Box<dyn ModuleUsableTerm>>) -> ModuleTerm {
         ModuleTerm {
-            name: "".to_string(),
             definitions,
         }
-    }
-
-    pub fn get_name(&self) -> String {
-        self.name.clone()
-    }
-
-    pub fn set_name(&mut self, new_name: &String) {
-        self.name = new_name.clone();
     }
 }
 

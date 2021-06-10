@@ -69,8 +69,4 @@ impl ActionTerm {
             returned_type,
         }
     }
-
-    pub fn get_name(&self) -> String {
-        self.name.get_value()
-    }
 }
