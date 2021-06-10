@@ -47,8 +47,8 @@ mod tests {
     use std::io::prelude::*;
 
     use super::Parser;
-    use crate::parser::ast::traits::ast_term::ASTTerm;
     use crate::ir::ir_component::IRComponent;
+    use crate::parser::ast::traits::ast_term::ASTTerm;
 
     #[test]
     fn with_correct_input_it_translates() {
