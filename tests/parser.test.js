@@ -1,6 +1,5 @@
 const parser = require('..');
 const files = require('./util/files');
-const validations = require('./util/validations');
 
 describe('Rapid CDS Parser Intergration Tests', () => {
   describe('With correct input', () => {
@@ -9,9 +8,9 @@ describe('Rapid CDS Parser Intergration Tests', () => {
 
       const ir = parser.generate_ir('test.cds');
 
-      expect(validations.servicesAreCorrect(ir.services)).toBeTruthy();
-      expect(validations.entitiesAreCorrect(ir.entities)).toBeTruthy();
       await files.deleteFile('test.cds');
+
+      expect(ir).toEqual(files.CORRECT_FILE_IR);
     });
   });
 
