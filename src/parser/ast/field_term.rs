@@ -1,15 +1,18 @@
-use super::name_term::NameTerm;
 use super::traits::ast_term::ASTTerm;
 use crate::ir::ir_component::IRComponent;
 use std::collections::HashMap;
 
 pub struct FieldTerm {
-    name: NameTerm,
-    type_name: NameTerm,
+    name: Box<dyn ASTTerm>,
+    type_name: Box<dyn ASTTerm>,
 }
 
 impl FieldTerm {
-    pub fn new(name: NameTerm, type_name: NameTerm) -> FieldTerm {
+    pub fn new_boxed(name: Box<dyn ASTTerm>, type_name: Box<dyn ASTTerm>) -> Box<FieldTerm> {
+        Box::new(FieldTerm::new(name, type_name))
+    }
+
+    pub fn new(name: Box<dyn ASTTerm>, type_name: Box<dyn ASTTerm>) -> FieldTerm {
         FieldTerm { name, type_name }
     }
 }

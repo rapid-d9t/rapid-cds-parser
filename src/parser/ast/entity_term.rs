@@ -1,5 +1,3 @@
-use super::field_term::FieldTerm;
-use super::name_term::NameTerm;
 use super::traits::ast_term::ASTTerm;
 use super::traits::module_term_type::ModuleTermType;
 use super::traits::module_usable_term::ModuleUsableTerm;
@@ -9,16 +7,24 @@ use crate::ir::ir_component::IRComponent;
 use std::collections::HashMap;
 
 pub struct EntityTerm {
-    name: NameTerm,
-    applied_aspects: Vec<NameTerm>,
-    fields: Vec<FieldTerm>,
+    name: Box<dyn ASTTerm>,
+    applied_aspects: Vec<Box<dyn ASTTerm>>,
+    fields: Vec<Box<dyn ASTTerm>>,
 }
 
 impl EntityTerm {
+    pub fn new_boxed(
+        name: Box<dyn ASTTerm>,
+        applied_aspects: Vec<Box<dyn ASTTerm>>,
+        fields: Vec<Box<dyn ASTTerm>>,
+    ) -> Box<EntityTerm> {
+        Box::new(EntityTerm::new(name, applied_aspects, fields))
+    }
+
     pub fn new(
-        name: NameTerm,
-        applied_aspects: Vec<NameTerm>,
-        fields: Vec<FieldTerm>,
+        name: Box<dyn ASTTerm>,
+        applied_aspects: Vec<Box<dyn ASTTerm>>,
+        fields: Vec<Box<dyn ASTTerm>>,
     ) -> EntityTerm {
         EntityTerm {
             name,
@@ -35,10 +41,6 @@ impl ModuleUsableTerm for EntityTerm {
 }
 
 impl ServiceUsableTerm for EntityTerm {
-    fn get_name(&self) -> String {
-        self.name.get_value()
-    }
-
     fn get_type(&self) -> ServiceTermType {
         ServiceTermType::Entity
     }

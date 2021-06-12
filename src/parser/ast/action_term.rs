@@ -1,6 +1,3 @@
-use super::name_term::NameTerm;
-use super::param_term::ParamTerm;
-use super::returns_term::ReturnsTerm;
 use super::traits::ast_term::ASTTerm;
 use super::traits::service_term_type::ServiceTermType;
 use super::traits::service_usable_term::ServiceUsableTerm;
@@ -8,16 +5,12 @@ use crate::ir::ir_component::IRComponent;
 use std::collections::HashMap;
 
 pub struct ActionTerm {
-    name: NameTerm,
-    params: Vec<ParamTerm>,
-    returned_type: Option<ReturnsTerm>,
+    name: Box<dyn ASTTerm>,
+    params: Vec<Box<dyn ASTTerm>>,
+    returned_type: Option<Box<dyn ASTTerm>>,
 }
 
 impl ServiceUsableTerm for ActionTerm {
-    fn get_name(&self) -> String {
-        self.name.get_value()
-    }
-
     fn get_type(&self) -> ServiceTermType {
         ServiceTermType::Action
     }
@@ -58,10 +51,18 @@ impl ASTTerm for ActionTerm {
 }
 
 impl ActionTerm {
+    pub fn new_boxed(
+        name: Box<dyn ASTTerm>,
+        params: Vec<Box<dyn ASTTerm>>,
+        returned_type: Option<Box<dyn ASTTerm>>,
+    ) -> Box<ActionTerm> {
+        Box::new(ActionTerm::new(name, params, returned_type))
+    }
+
     pub fn new(
-        name: NameTerm,
-        params: Vec<ParamTerm>,
-        returned_type: Option<ReturnsTerm>,
+        name: Box<dyn ASTTerm>,
+        params: Vec<Box<dyn ASTTerm>>,
+        returned_type: Option<Box<dyn ASTTerm>>,
     ) -> ActionTerm {
         ActionTerm {
             name,

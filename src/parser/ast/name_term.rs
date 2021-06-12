@@ -6,12 +6,12 @@ pub struct NameTerm {
 }
 
 impl NameTerm {
-    pub fn new(value: String) -> NameTerm {
-        NameTerm { value }
+    pub fn new_boxed(value: String) -> Box<NameTerm> {
+        Box::new(NameTerm::new(value))
     }
 
-    pub fn get_value(&self) -> String {
-        self.value.clone()
+    pub fn new(value: String) -> NameTerm {
+        NameTerm { value }
     }
 }
 

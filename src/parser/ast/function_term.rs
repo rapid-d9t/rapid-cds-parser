@@ -1,6 +1,3 @@
-use super::name_term::NameTerm;
-use super::param_term::ParamTerm;
-use super::returns_term::ReturnsTerm;
 use super::traits::ast_term::ASTTerm;
 use super::traits::service_term_type::ServiceTermType;
 use super::traits::service_usable_term::ServiceUsableTerm;
@@ -8,13 +5,25 @@ use crate::ir::ir_component::IRComponent;
 use std::collections::HashMap;
 
 pub struct FunctionTerm {
-    name: NameTerm,
-    params: Vec<ParamTerm>,
-    returned_type: ReturnsTerm,
+    name: Box<dyn ASTTerm>,
+    params: Vec<Box<dyn ASTTerm>>,
+    returned_type: Box<dyn ASTTerm>,
 }
 
 impl FunctionTerm {
-    pub fn new(name: NameTerm, params: Vec<ParamTerm>, returned_type: ReturnsTerm) -> FunctionTerm {
+    pub fn new_boxed(
+        name: Box<dyn ASTTerm>,
+        params: Vec<Box<dyn ASTTerm>>,
+        returned_type: Box<dyn ASTTerm>,
+    ) -> Box<FunctionTerm> {
+        Box::new(FunctionTerm::new(name, params, returned_type))
+    }
+
+    pub fn new(
+        name: Box<dyn ASTTerm>,
+        params: Vec<Box<dyn ASTTerm>>,
+        returned_type: Box<dyn ASTTerm>,
+    ) -> FunctionTerm {
         FunctionTerm {
             name,
             params,
@@ -24,10 +33,6 @@ impl FunctionTerm {
 }
 
 impl ServiceUsableTerm for FunctionTerm {
-    fn get_name(&self) -> String {
-        self.name.get_value()
-    }
-
     fn get_type(&self) -> ServiceTermType {
         ServiceTermType::Function
     }

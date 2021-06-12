@@ -9,6 +9,10 @@ pub struct ModuleTerm {
 }
 
 impl ModuleTerm {
+    pub fn new_boxed(definitions: Vec<Box<dyn ModuleUsableTerm>>) -> Box<ModuleTerm> {
+        Box::new(ModuleTerm::new(definitions))
+    }
+
     pub fn new(definitions: Vec<Box<dyn ModuleUsableTerm>>) -> ModuleTerm {
         ModuleTerm { definitions }
     }

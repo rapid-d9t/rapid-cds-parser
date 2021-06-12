@@ -16,7 +16,7 @@ impl Parser {
         Parser { path }
     }
 
-    pub fn parse(&self) -> Result<ModuleTerm, ParseError> {
+    pub fn parse(&self) -> Result<Box<ModuleTerm>, ParseError> {
         let path = Path::new(&self.path);
 
         let mut file = File::open(path)?;
