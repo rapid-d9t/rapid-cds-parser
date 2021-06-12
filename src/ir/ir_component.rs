@@ -113,7 +113,6 @@ impl IRComponent {
 #[cfg(test)]
 mod tests {
     use super::IRComponent;
-    use std::collections::HashMap;
 
     #[test]
     fn it_comparable() {
