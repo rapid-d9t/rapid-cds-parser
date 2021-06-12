@@ -57,3 +57,79 @@ impl ASTTerm for FunctionTerm {
         Box::new(IRComponent::new_object_from_map(fields))
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::FunctionTerm;
+    use crate::ir::ir_component::IRComponent;
+    use crate::parser::ast::name_term::NameTerm;
+    use crate::parser::ast::traits::ast_term::ASTTerm;
+    use crate::parser::ast::traits::service_term_type::ServiceTermType;
+    use crate::parser::ast::traits::service_usable_term::ServiceUsableTerm;
+
+    #[test]
+    fn it_implements_service_usable_term_trait() {
+        let function_term = FunctionTerm::new_boxed(
+            NameTerm::new_boxed("mock".to_string()),
+            vec![],
+            NameTerm::new_boxed("mock".to_string()),
+        );
+
+        assert_eq!(function_term.get_type(), ServiceTermType::Function);
+    }
+
+    #[test]
+    fn with_empty_params_it_generates_ir() {
+        let function_term = FunctionTerm::new_boxed(
+            NameTerm::new_boxed("mock".to_string()),
+            vec![],
+            NameTerm::new_boxed("mock".to_string()),
+        );
+        let function_ir = function_term.generate_ir();
+
+        let correct_ir_mock_fields = vec![
+            (
+                "name",
+                Box::new(IRComponent::new_string("mock".to_string())),
+            ),
+            ("params", Box::new(IRComponent::new_array(vec![]))),
+            (
+                "output",
+                Box::new(IRComponent::new_string("mock".to_string())),
+            ),
+        ];
+        let correct_ir = IRComponent::new_object_from_vec(correct_ir_mock_fields);
+
+        assert_eq!(function_ir, Box::new(correct_ir));
+    }
+
+    #[test]
+    fn with_some_params_and_output_it_generates_ir() {
+        let function_term = FunctionTerm::new_boxed(
+            NameTerm::new_boxed("mock".to_string()),
+            vec![NameTerm::new_boxed("mock".to_string())],
+            NameTerm::new_boxed("mock".to_string()),
+        );
+        let function_ir = function_term.generate_ir();
+
+        let correct_ir_mock_fields = vec![
+            (
+                "name",
+                Box::new(IRComponent::new_string("mock".to_string())),
+            ),
+            (
+                "params",
+                Box::new(IRComponent::new_array(vec![Box::new(
+                    IRComponent::new_string("mock".to_string()),
+                )])),
+            ),
+            (
+                "output",
+                Box::new(IRComponent::new_string("mock".to_string())),
+            ),
+        ];
+        let correct_ir = IRComponent::new_object_from_vec(correct_ir_mock_fields);
+
+        assert_eq!(function_ir, Box::new(correct_ir));
+    }
+}
