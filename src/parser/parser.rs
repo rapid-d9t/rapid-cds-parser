@@ -93,18 +93,9 @@ mod tests {
         remove_file("test_correct.cds").unwrap();
 
         let correct_ir_mock_fields = vec![
-            (
-                "services",
-                Box::new(IRComponent::new_array(vec![])),
-            ),
-            (
-                "types",
-                Box::new(IRComponent::new_array(vec![])),
-            ),
-            (
-                "entities",
-                Box::new(IRComponent::new_array(vec![])),
-            ),
+            ("services", Box::new(IRComponent::new_array(vec![]))),
+            ("types", Box::new(IRComponent::new_array(vec![]))),
+            ("entities", Box::new(IRComponent::new_array(vec![]))),
         ];
         let correct_ir = IRComponent::new_object_from_vec(correct_ir_mock_fields);
 

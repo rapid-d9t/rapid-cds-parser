@@ -74,14 +74,15 @@ impl ActionTerm {
 
 #[cfg(test)]
 mod tests {
-    use crate::parser::ast::traits::ast_term::ASTTerm;
-    use crate::parser::ast::name_term::NameTerm;
-    use crate::ir::ir_component::IRComponent;
     use super::ActionTerm;
+    use crate::ir::ir_component::IRComponent;
+    use crate::parser::ast::name_term::NameTerm;
+    use crate::parser::ast::traits::ast_term::ASTTerm;
 
     #[test]
     fn with_empty_params_it_generates_ir() {
-        let action_term = ActionTerm::new_boxed(NameTerm::new_boxed("mock".to_string()), vec![], None);
+        let action_term =
+            ActionTerm::new_boxed(NameTerm::new_boxed("mock".to_string()), vec![], None);
         let action_ir = action_term.generate_ir();
 
         let correct_ir_mock_fields = vec![
@@ -89,14 +90,8 @@ mod tests {
                 "name",
                 Box::new(IRComponent::new_string("mock".to_string())),
             ),
-            (
-                "params",
-                Box::new(IRComponent::new_array(vec![])),
-            ),
-            (
-                "hasOutput",
-                Box::new(IRComponent::new_bool(false)),
-            ),
+            ("params", Box::new(IRComponent::new_array(vec![]))),
+            ("hasOutput", Box::new(IRComponent::new_bool(false))),
         ];
         let correct_ir = IRComponent::new_object_from_vec(correct_ir_mock_fields);
 
@@ -117,14 +112,8 @@ mod tests {
                 "name",
                 Box::new(IRComponent::new_string("mock".to_string())),
             ),
-            (
-                "params",
-                Box::new(IRComponent::new_array(vec![])),
-            ),
-            (
-                "hasOutput",
-                Box::new(IRComponent::new_bool(true)),
-            ),
+            ("params", Box::new(IRComponent::new_array(vec![]))),
+            ("hasOutput", Box::new(IRComponent::new_bool(true))),
             (
                 "output",
                 Box::new(IRComponent::new_string("mock".to_string())),
@@ -151,18 +140,11 @@ mod tests {
             ),
             (
                 "params",
-                Box::new(
-                    IRComponent::new_array(
-                        vec![
-                            Box::new(IRComponent::new_string("mock".to_string()))
-                        ]
-                    )
-                ),
+                Box::new(IRComponent::new_array(vec![Box::new(
+                    IRComponent::new_string("mock".to_string()),
+                )])),
             ),
-            (
-                "hasOutput",
-                Box::new(IRComponent::new_bool(false)),
-            ),
+            ("hasOutput", Box::new(IRComponent::new_bool(false))),
         ];
         let correct_ir = IRComponent::new_object_from_vec(correct_ir_mock_fields);
 
@@ -185,18 +167,11 @@ mod tests {
             ),
             (
                 "params",
-                Box::new(
-                    IRComponent::new_array(
-                        vec![
-                            Box::new(IRComponent::new_string("mock".to_string()))
-                        ]
-                    )
-                ),
+                Box::new(IRComponent::new_array(vec![Box::new(
+                    IRComponent::new_string("mock".to_string()),
+                )])),
             ),
-            (
-                "hasOutput",
-                Box::new(IRComponent::new_bool(true)),
-            ),
+            ("hasOutput", Box::new(IRComponent::new_bool(true))),
             (
                 "output",
                 Box::new(IRComponent::new_string("mock".to_string())),
