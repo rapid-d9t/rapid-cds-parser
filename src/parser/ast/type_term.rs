@@ -52,32 +52,22 @@ impl ASTTerm for TypeTerm {
     }
 }
 
-// #[cfg(test)]
-// mod tests {
-//     use super::TypeTerm;
-//     use crate::parser::ast::name_term::NameTerm;
+#[cfg(test)]
+mod tests {
+    use super::TypeTerm;
+    use crate::parser::ast::name_term::NameTerm;
 
-//     use crate::parser::ast::traits::service_term_type::ServiceTermType;
-//     use crate::parser::ast::traits::service_usable_term::ServiceUsableTerm;
+    use crate::parser::ast::traits::ast_term::ASTTerm;
+    use crate::parser::ast::traits::service_term_type::ServiceTermType;
+    use crate::parser::ast::traits::service_usable_term::ServiceUsableTerm;
 
-//     #[test]
-//     fn it_inits() {
-//         let term = TypeTerm::new(
-//             Box::new(NameTerm::new("test".to_string())),
-//             Box::new(NameTerm::new("TestType".to_string())),
-//         );
+    #[test]
+    fn it_implements_service_usable_term_trait() {
+        let term: Box<dyn ServiceUsableTerm> = TypeTerm::new_boxed(
+            NameTerm::new_boxed("test".to_string()),
+            NameTerm::new_boxed("TestType".to_string()),
+        );
 
-//         assert_eq!(term.name.get_value(), "test");
-//         assert_eq!(term.resolved_type_name.get_value(), "TestType");
-//     }
-
-//     #[test]
-//     fn it_implements_service_usable_term_trait() {
-//         let term: Box<dyn ServiceUsableTerm> = Box::new(TypeTerm::new(
-//             Box::new(NameTerm::new("test".to_string())),
-//             Box::new(NameTerm::new("TestType".to_string())),
-//         ));
-
-//         assert_eq!(term.get_type(), ServiceTermType::Type);
-//     }
-// }
+        assert_eq!(term.get_type(), ServiceTermType::Type);
+    }
+}

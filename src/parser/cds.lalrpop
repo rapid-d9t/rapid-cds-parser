@@ -127,28 +127,28 @@ Entity: Box<EntityTerm> = {
     }
 }
 
-AspectNames: Vec<Box<NameTerm>> = {
+AspectNames: Vec<Box<dyn ASTTerm>> = {
     <aspect_name:Name> => {
-        let mut aspect_names = Vec::new();
+        let mut aspect_names: Vec<Box<dyn ASTTerm>> = Vec::new();
         aspect_names.push(aspect_name);
         aspect_names
     },
     <aspect_names:AspectNames> "," <aspect_name:Name> => {
-        let mut new_aspect_names = Vec::new();
+        let mut new_aspect_names: Vec<Box<dyn ASTTerm>> = Vec::new();
         new_aspect_names.extend(aspect_names);
         new_aspect_names.push(aspect_name);
         new_aspect_names
     }
 }
 
-Fields: Vec<Box<FieldTerm>> = {
+Fields: Vec<Box<dyn ASTTerm>> = {
     <field:Field> => {
-        let mut fields = Vec::new();
+        let mut fields: Vec<Box<dyn ASTTerm>> = Vec::new();
         fields.push(field);
         fields
     },
     <fields:Fields> <field:Field> => {
-        let mut new_fields = Vec::new();
+        let mut new_fields: Vec<Box<dyn ASTTerm>> = Vec::new();
         new_fields.extend(fields);
         new_fields.push(field);
         new_fields
@@ -182,14 +182,14 @@ Returns: Box<ReturnsTerm> = {
     "array" "of" <name:Name> => ReturnsTerm::new_arrayed_boxed(name),
 }
 
-Params: Vec<Box<ParamTerm>> = {
+Params: Vec<Box<dyn ASTTerm>> = {
     <param:Param> => {
-        let mut params = Vec::new();
+        let mut params: Vec<Box<dyn ASTTerm>> = Vec::new();
         params.push(param);
         params
     },
     <params:Params> <param:Param> => {
-        let mut new_params = Vec::new();
+        let mut new_params: Vec<Box<dyn ASTTerm>> = Vec::new();
         new_params.extend(params);
         new_params.push(param);
         new_params
