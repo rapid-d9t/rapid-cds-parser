@@ -118,16 +118,34 @@ mod tests {
     #[test]
     fn it_comparable() {
         let fields_1 = vec![
-            ("name", Box::new(IRComponent::new_string("test".to_string()))),
-            ("name2", Box::new(IRComponent::new_string("test".to_string()))),
-            ("name3", Box::new(IRComponent::new_string("test".to_string())))
+            (
+                "name",
+                Box::new(IRComponent::new_string("test".to_string())),
+            ),
+            (
+                "name2",
+                Box::new(IRComponent::new_string("test".to_string())),
+            ),
+            (
+                "name3",
+                Box::new(IRComponent::new_string("test".to_string())),
+            ),
         ];
         let component_1 = IRComponent::new_object_from_vec(fields_1);
 
         let fields_2 = vec![
-            ("name", Box::new(IRComponent::new_string("test".to_string()))),
-            ("name2", Box::new(IRComponent::new_string("test".to_string()))),
-            ("name3", Box::new(IRComponent::new_string("test".to_string())))
+            (
+                "name",
+                Box::new(IRComponent::new_string("test".to_string())),
+            ),
+            (
+                "name2",
+                Box::new(IRComponent::new_string("test".to_string())),
+            ),
+            (
+                "name3",
+                Box::new(IRComponent::new_string("test".to_string())),
+            ),
         ];
         let component_2 = IRComponent::new_object_from_vec(fields_2);
 
@@ -137,22 +155,46 @@ mod tests {
     #[test]
     fn it_matchable() {
         let fields_1 = vec![
-            ("name", Box::new(IRComponent::new_string("test".to_string()))),
-            ("name2", Box::new(IRComponent::new_string("test".to_string()))),
-            ("name3", Box::new(IRComponent::new_string("test".to_string())))
+            (
+                "name",
+                Box::new(IRComponent::new_string("test".to_string())),
+            ),
+            (
+                "name2",
+                Box::new(IRComponent::new_string("test".to_string())),
+            ),
+            (
+                "name3",
+                Box::new(IRComponent::new_string("test".to_string())),
+            ),
         ];
         let component_1 = IRComponent::new_object_from_vec(fields_1);
 
         let fields_2 = vec![
-            ("name", Box::new(IRComponent::new_string("test".to_string()))),
-            ("name2", Box::new(IRComponent::new_string("test".to_string()))),
-            ("name3", Box::new(IRComponent::new_string("test".to_string())))
+            (
+                "name",
+                Box::new(IRComponent::new_string("test".to_string())),
+            ),
+            (
+                "name2",
+                Box::new(IRComponent::new_string("test".to_string())),
+            ),
+            (
+                "name3",
+                Box::new(IRComponent::new_string("test".to_string())),
+            ),
         ];
         let component_2 = IRComponent::new_object_from_vec(fields_2);
 
         let fields_3 = vec![
-            ("name", Box::new(IRComponent::new_string("test".to_string()))),
-            ("name3", Box::new(IRComponent::new_string("test".to_string())))
+            (
+                "name",
+                Box::new(IRComponent::new_string("test".to_string())),
+            ),
+            (
+                "name3",
+                Box::new(IRComponent::new_string("test".to_string())),
+            ),
         ];
         let component_3 = IRComponent::new_object_from_vec(fields_3);
 
