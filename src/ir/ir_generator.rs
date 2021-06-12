@@ -29,7 +29,7 @@ impl IRGenerator {
     fn parse<'internal, 'outer>(
         &self,
         cx: &mut JsContext<'internal, 'outer>,
-    ) -> Result<ModuleTerm, neon::result::Throw> {
+    ) -> Result<Box<ModuleTerm>, neon::result::Throw> {
         match self.parser.parse() {
             Ok(module) => Ok(module),
             Err(parse_error) => return cx.throw_error(format!("{}", parse_error)),
@@ -38,7 +38,7 @@ impl IRGenerator {
 
     fn generate_ir_object_tree<'internal, 'outer>(
         &self,
-        root_module: ModuleTerm,
+        root_module: Box<ModuleTerm>,
         cx: &mut JsContext<'internal, 'outer>,
     ) -> JsResult<'internal, JsValue> {
         let ir_representation = root_module.generate_ir();

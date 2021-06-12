@@ -16,7 +16,7 @@ impl Parser {
         Parser { path }
     }
 
-    pub fn parse(&self) -> Result<ModuleTerm, ParseError> {
+    pub fn parse(&self) -> Result<Box<ModuleTerm>, ParseError> {
         let path = Path::new(&self.path);
 
         let mut file = File::open(path)?;
@@ -40,8 +40,6 @@ impl Parser {
 
 #[cfg(test)]
 mod tests {
-    use assert_matches::assert_matches;
-
     use std::fs::remove_file;
     use std::fs::File;
     use std::io::prelude::*;
@@ -94,7 +92,14 @@ mod tests {
 
         remove_file("test_correct.cds").unwrap();
 
-        assert_matches!(*result, IRComponent::Object { fields });
+        let correct_ir_mock_fields = vec![
+            ("services", Box::new(IRComponent::new_array(vec![]))),
+            ("types", Box::new(IRComponent::new_array(vec![]))),
+            ("entities", Box::new(IRComponent::new_array(vec![]))),
+        ];
+        let correct_ir = IRComponent::new_object_from_vec(correct_ir_mock_fields);
+
+        assert!(result.mathes(&correct_ir));
     }
 
     #[test]
