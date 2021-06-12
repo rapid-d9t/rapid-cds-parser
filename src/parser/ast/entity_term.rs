@@ -78,3 +78,69 @@ impl ASTTerm for EntityTerm {
         Box::new(IRComponent::new_object_from_map(fields))
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::EntityTerm;
+    use crate::ir::ir_component::IRComponent;
+    use crate::parser::ast::name_term::NameTerm;
+    use crate::parser::ast::traits::ast_term::ASTTerm;
+    use crate::parser::ast::traits::service_term_type::ServiceTermType;
+    use crate::parser::ast::traits::service_usable_term::ServiceUsableTerm;
+
+    #[test]
+    fn it_implements_service_usable_term_trait() {
+        let entity_term =
+            EntityTerm::new_boxed(NameTerm::new_boxed("mock".to_string()), vec![], vec![]);
+
+        assert_eq!(entity_term.get_type(), ServiceTermType::Entity);
+    }
+
+    #[test]
+    fn with_empty_aspects_it_generates_ir() {
+        let entity_term =
+            EntityTerm::new_boxed(NameTerm::new_boxed("mock".to_string()), vec![], vec![]);
+        let entity_ir = entity_term.generate_ir();
+
+        let correct_ir_mock_fields = vec![
+            (
+                "name",
+                Box::new(IRComponent::new_string("mock".to_string())),
+            ),
+            ("fields", Box::new(IRComponent::new_array(vec![]))),
+            ("aspects", Box::new(IRComponent::new_array(vec![]))),
+            ("isProjection", Box::new(IRComponent::new_bool(false))),
+        ];
+        let correct_ir = IRComponent::new_object_from_vec(correct_ir_mock_fields);
+
+        assert_eq!(entity_ir, Box::new(correct_ir));
+    }
+
+    #[test]
+    fn with_some_aspects_it_generates_ir() {
+        let entity_term = EntityTerm::new_boxed(
+            NameTerm::new_boxed("mock".to_string()),
+            vec![NameTerm::new_boxed("mock".to_string())],
+            vec![],
+        );
+        let entity_ir = entity_term.generate_ir();
+
+        let correct_ir_mock_fields = vec![
+            (
+                "name",
+                Box::new(IRComponent::new_string("mock".to_string())),
+            ),
+            ("fields", Box::new(IRComponent::new_array(vec![]))),
+            (
+                "aspects",
+                Box::new(IRComponent::new_array(vec![Box::new(
+                    IRComponent::new_string("mock".to_string()),
+                )])),
+            ),
+            ("isProjection", Box::new(IRComponent::new_bool(false))),
+        ];
+        let correct_ir = IRComponent::new_object_from_vec(correct_ir_mock_fields);
+
+        assert_eq!(entity_ir, Box::new(correct_ir));
+    }
+}
