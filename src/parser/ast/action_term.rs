@@ -71,3 +71,139 @@ impl ActionTerm {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::parser::ast::traits::ast_term::ASTTerm;
+    use crate::parser::ast::name_term::NameTerm;
+    use crate::ir::ir_component::IRComponent;
+    use super::ActionTerm;
+
+    #[test]
+    fn with_empty_params_it_generates_ir() {
+        let action_term = ActionTerm::new_boxed(NameTerm::new_boxed("mock".to_string()), vec![], None);
+        let action_ir = action_term.generate_ir();
+
+        let correct_ir_mock_fields = vec![
+            (
+                "name",
+                Box::new(IRComponent::new_string("mock".to_string())),
+            ),
+            (
+                "params",
+                Box::new(IRComponent::new_array(vec![])),
+            ),
+            (
+                "hasOutput",
+                Box::new(IRComponent::new_bool(false)),
+            ),
+        ];
+        let correct_ir = IRComponent::new_object_from_vec(correct_ir_mock_fields);
+
+        assert_eq!(action_ir, Box::new(correct_ir));
+    }
+
+    #[test]
+    fn with_empty_params_and_output_it_generates_ir() {
+        let action_term = ActionTerm::new_boxed(
+            NameTerm::new_boxed("mock".to_string()),
+            vec![],
+            Some(NameTerm::new_boxed("mock".to_string())),
+        );
+        let action_ir = action_term.generate_ir();
+
+        let correct_ir_mock_fields = vec![
+            (
+                "name",
+                Box::new(IRComponent::new_string("mock".to_string())),
+            ),
+            (
+                "params",
+                Box::new(IRComponent::new_array(vec![])),
+            ),
+            (
+                "hasOutput",
+                Box::new(IRComponent::new_bool(true)),
+            ),
+            (
+                "output",
+                Box::new(IRComponent::new_string("mock".to_string())),
+            ),
+        ];
+        let correct_ir = IRComponent::new_object_from_vec(correct_ir_mock_fields);
+
+        assert_eq!(action_ir, Box::new(correct_ir));
+    }
+
+    #[test]
+    fn with_some_params_it_generates_ir() {
+        let action_term = ActionTerm::new_boxed(
+            NameTerm::new_boxed("mock".to_string()),
+            vec![NameTerm::new_boxed("mock".to_string())],
+            None,
+        );
+        let action_ir = action_term.generate_ir();
+
+        let correct_ir_mock_fields = vec![
+            (
+                "name",
+                Box::new(IRComponent::new_string("mock".to_string())),
+            ),
+            (
+                "params",
+                Box::new(
+                    IRComponent::new_array(
+                        vec![
+                            Box::new(IRComponent::new_string("mock".to_string()))
+                        ]
+                    )
+                ),
+            ),
+            (
+                "hasOutput",
+                Box::new(IRComponent::new_bool(false)),
+            ),
+        ];
+        let correct_ir = IRComponent::new_object_from_vec(correct_ir_mock_fields);
+
+        assert_eq!(action_ir, Box::new(correct_ir));
+    }
+
+    #[test]
+    fn with_some_params_and_output_it_generates_ir() {
+        let action_term = ActionTerm::new_boxed(
+            NameTerm::new_boxed("mock".to_string()),
+            vec![NameTerm::new_boxed("mock".to_string())],
+            Some(NameTerm::new_boxed("mock".to_string())),
+        );
+        let action_ir = action_term.generate_ir();
+
+        let correct_ir_mock_fields = vec![
+            (
+                "name",
+                Box::new(IRComponent::new_string("mock".to_string())),
+            ),
+            (
+                "params",
+                Box::new(
+                    IRComponent::new_array(
+                        vec![
+                            Box::new(IRComponent::new_string("mock".to_string()))
+                        ]
+                    )
+                ),
+            ),
+            (
+                "hasOutput",
+                Box::new(IRComponent::new_bool(true)),
+            ),
+            (
+                "output",
+                Box::new(IRComponent::new_string("mock".to_string())),
+            ),
+        ];
+        let correct_ir = IRComponent::new_object_from_vec(correct_ir_mock_fields);
+
+        assert_eq!(action_ir, Box::new(correct_ir));
+    }
+}

@@ -1,6 +1,6 @@
 {
   "name": "@rapid-d9t/rapid-cds-parser",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "npm module for rapid parsing of cds",
   "main": "index.node",
   "scripts": {
