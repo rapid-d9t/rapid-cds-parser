@@ -9,6 +9,10 @@ pub struct ModuleTerm {
 }
 
 impl ModuleTerm {
+    pub fn new_boxed(definitions: Vec<Box<dyn ModuleUsableTerm>>) -> Box<ModuleTerm> {
+        Box::new(ModuleTerm::new(definitions))
+    }
+
     pub fn new(definitions: Vec<Box<dyn ModuleUsableTerm>>) -> ModuleTerm {
         ModuleTerm { definitions }
     }
@@ -48,6 +52,30 @@ impl ASTTerm for ModuleTerm {
             Box::new(IRComponent::new_array(services)),
         );
 
-        Box::new(IRComponent::new_object(fields))
+        Box::new(IRComponent::new_object_from_map(fields))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::parser::ast::traits::ast_term::ASTTerm;
+
+    use crate::ir::ir_component::IRComponent;
+
+    use super::ModuleTerm;
+
+    #[test]
+    fn it_generates_ir() {
+        let service_term = ModuleTerm::new_boxed(vec![]);
+        let service_ir = service_term.generate_ir();
+
+        let correct_ir_mock_fields = vec![
+            ("entities", Box::new(IRComponent::new_array(vec![]))),
+            ("services", Box::new(IRComponent::new_array(vec![]))),
+            ("types", Box::new(IRComponent::new_array(vec![]))),
+        ];
+        let correct_ir = IRComponent::new_object_from_vec(correct_ir_mock_fields);
+
+        assert_eq!(service_ir, Box::new(correct_ir));
     }
 }

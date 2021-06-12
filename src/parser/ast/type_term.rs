@@ -1,4 +1,3 @@
-use super::name_term::NameTerm;
 use super::traits::ast_term::ASTTerm;
 use super::traits::module_term_type::ModuleTermType;
 use super::traits::module_usable_term::ModuleUsableTerm;
@@ -8,12 +7,19 @@ use crate::ir::ir_component::IRComponent;
 use std::collections::HashMap;
 
 pub struct TypeTerm {
-    name: NameTerm,
-    resolved_type_name: NameTerm,
+    name: Box<dyn ASTTerm>,
+    resolved_type_name: Box<dyn ASTTerm>,
 }
 
 impl TypeTerm {
-    pub fn new(name: NameTerm, resolved_type_name: NameTerm) -> TypeTerm {
+    pub fn new_boxed(
+        name: Box<dyn ASTTerm>,
+        resolved_type_name: Box<dyn ASTTerm>,
+    ) -> Box<TypeTerm> {
+        Box::new(TypeTerm::new(name, resolved_type_name))
+    }
+
+    pub fn new(name: Box<dyn ASTTerm>, resolved_type_name: Box<dyn ASTTerm>) -> TypeTerm {
         TypeTerm {
             name,
             resolved_type_name,
@@ -28,10 +34,6 @@ impl ModuleUsableTerm for TypeTerm {
 }
 
 impl ServiceUsableTerm for TypeTerm {
-    fn get_name(&self) -> String {
-        self.name.get_value()
-    }
-
     fn get_type(&self) -> ServiceTermType {
         ServiceTermType::Type
     }
@@ -46,37 +48,51 @@ impl ASTTerm for TypeTerm {
             self.resolved_type_name.generate_ir(),
         );
 
-        Box::new(IRComponent::new_object(fields))
+        Box::new(IRComponent::new_object_from_map(fields))
     }
 }
 
 #[cfg(test)]
 mod tests {
+    use crate::ir::ir_component::IRComponent;
+
     use super::TypeTerm;
     use crate::parser::ast::name_term::NameTerm;
 
+    use crate::parser::ast::traits::ast_term::ASTTerm;
     use crate::parser::ast::traits::service_term_type::ServiceTermType;
     use crate::parser::ast::traits::service_usable_term::ServiceUsableTerm;
 
     #[test]
-    fn it_inits() {
-        let term = TypeTerm::new(
-            NameTerm::new("test".to_string()),
-            NameTerm::new("TestType".to_string()),
+    fn it_implements_service_usable_term_trait() {
+        let term: Box<dyn ServiceUsableTerm> = TypeTerm::new_boxed(
+            NameTerm::new_boxed("test".to_string()),
+            NameTerm::new_boxed("TestType".to_string()),
         );
 
-        assert_eq!(term.name.get_value(), "test");
-        assert_eq!(term.resolved_type_name.get_value(), "TestType");
+        assert_eq!(term.get_type(), ServiceTermType::Type);
     }
 
     #[test]
-    fn it_implements_service_usable_term_trait() {
-        let term: Box<dyn ServiceUsableTerm> = Box::new(TypeTerm::new(
-            NameTerm::new("test".to_string()),
-            NameTerm::new("TestType".to_string()),
-        ));
+    fn it_generates_ir() {
+        let type_term = TypeTerm::new_boxed(
+            NameTerm::new_boxed("mock-name".to_string()),
+            NameTerm::new_boxed("mock-type".to_string()),
+        );
+        let type_ir = type_term.generate_ir();
 
-        assert_eq!(term.get_name(), "test");
-        assert_eq!(term.get_type(), ServiceTermType::Type);
+        let correct_ir_mock_type = vec![
+            (
+                "name",
+                Box::new(IRComponent::new_string("mock-name".to_string())),
+            ),
+            (
+                "resolvesTo",
+                Box::new(IRComponent::new_string("mock-type".to_string())),
+            ),
+        ];
+        let correct_ir = IRComponent::new_object_from_vec(correct_ir_mock_type);
+
+        assert_eq!(type_ir, Box::new(correct_ir));
     }
 }
