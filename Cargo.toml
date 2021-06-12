@@ -11,7 +11,7 @@ exclude = ["index.node"]
 lalrpop = "0.19.5"
 
 [dependencies]
-lalrpop-util = "0.19.5"
+lalrpop-util = "0.19.6"
 regex = "1"
 
 [lib]
