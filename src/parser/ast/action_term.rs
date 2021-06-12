@@ -46,7 +46,7 @@ impl ASTTerm for ActionTerm {
             }
         }
 
-        Box::new(IRComponent::new_object(fields))
+        Box::new(IRComponent::new_object_from_map(fields))
     }
 }
 

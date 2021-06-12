@@ -52,6 +52,6 @@ impl ASTTerm for ModuleTerm {
             Box::new(IRComponent::new_array(services)),
         );
 
-        Box::new(IRComponent::new_object(fields))
+        Box::new(IRComponent::new_object_from_map(fields))
     }
 }

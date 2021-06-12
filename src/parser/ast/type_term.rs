@@ -48,7 +48,7 @@ impl ASTTerm for TypeTerm {
             self.resolved_type_name.generate_ir(),
         );
 
-        Box::new(IRComponent::new_object(fields))
+        Box::new(IRComponent::new_object_from_map(fields))
     }
 }
 

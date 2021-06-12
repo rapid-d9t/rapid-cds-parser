@@ -54,6 +54,6 @@ impl ASTTerm for FunctionTerm {
         );
         fields.insert("output".to_string(), self.returned_type.generate_ir());
 
-        Box::new(IRComponent::new_object(fields))
+        Box::new(IRComponent::new_object_from_map(fields))
     }
 }

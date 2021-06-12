@@ -40,6 +40,6 @@ impl ASTTerm for ReturnsTerm {
             Box::new(IRComponent::new_bool(self.is_arrayed)),
         );
 
-        Box::new(IRComponent::new_object(fields))
+        Box::new(IRComponent::new_object_from_map(fields))
     }
 }

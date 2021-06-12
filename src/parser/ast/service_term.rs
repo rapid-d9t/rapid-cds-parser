@@ -71,7 +71,7 @@ impl ASTTerm for ServiceTerm {
             Box::new(IRComponent::new_array(functions)),
         );
 
-        Box::new(IRComponent::new_object(fields))
+        Box::new(IRComponent::new_object_from_map(fields))
     }
 }
 

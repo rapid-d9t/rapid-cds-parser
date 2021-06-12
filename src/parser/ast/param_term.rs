@@ -27,6 +27,6 @@ impl ASTTerm for ParamTerm {
             Box::new(IRComponent::new_bool(false)),
         );
 
-        Box::new(IRComponent::new_object(fields))
+        Box::new(IRComponent::new_object_from_map(fields))
     }
 }
