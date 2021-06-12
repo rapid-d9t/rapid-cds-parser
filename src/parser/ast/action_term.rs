@@ -78,6 +78,16 @@ mod tests {
     use crate::ir::ir_component::IRComponent;
     use crate::parser::ast::name_term::NameTerm;
     use crate::parser::ast::traits::ast_term::ASTTerm;
+    use crate::parser::ast::traits::service_term_type::ServiceTermType;
+    use crate::parser::ast::traits::service_usable_term::ServiceUsableTerm;
+
+    #[test]
+    fn it_implements_service_usable_term_trait() {
+        let action_term =
+            ActionTerm::new_boxed(NameTerm::new_boxed("mock".to_string()), vec![], None);
+
+        assert_eq!(action_term.get_type(), ServiceTermType::Action);
+    }
 
     #[test]
     fn with_empty_params_it_generates_ir() {
