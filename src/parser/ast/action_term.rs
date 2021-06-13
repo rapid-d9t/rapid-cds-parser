@@ -43,8 +43,7 @@ impl ActionTerm {
         if let Some(returned_type) = &self.returned_type {
             fields.push(("output", returned_type.generate_ir()));
             fields.push(("hasOutput", Box::new(IRComponent::new_bool(true))));
-        }
-        else {
+        } else {
             fields.push(("hasOutput", Box::new(IRComponent::new_bool(false))));
         }
     }
