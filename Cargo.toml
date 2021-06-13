@@ -1,6 +1,6 @@
 [package]
 name = "rapid-cds-parser"
-version = "0.2.0"
+version = "0.3.0"
 description = "npm module for rapid parsing of cds"
 authors = ["zkud <kudirko.anton@gmail.com>"]
 license = "MIT"

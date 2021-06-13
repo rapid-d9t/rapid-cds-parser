@@ -4,7 +4,29 @@ use super::traits::module_usable_term::ModuleUsableTerm;
 use super::traits::service_term_type::ServiceTermType;
 use super::traits::service_usable_term::ServiceUsableTerm;
 use crate::ir::ir_component::IRComponent;
-use std::collections::HashMap;
+
+impl ModuleUsableTerm for TypeTerm {
+    fn get_type(&self) -> ModuleTermType {
+        ModuleTermType::Type
+    }
+}
+
+impl ServiceUsableTerm for TypeTerm {
+    fn get_type(&self) -> ServiceTermType {
+        ServiceTermType::Type
+    }
+}
+
+impl ASTTerm for TypeTerm {
+    fn generate_ir(&self) -> Box<IRComponent> {
+        let fields = vec![
+            ("name", self.name.generate_ir()),
+            ("resolvesTo", self.resolved_type_name.generate_ir()),
+        ];
+
+        Box::new(IRComponent::new_object_from_vec(fields))
+    }
+}
 
 pub struct TypeTerm {
     name: Box<dyn ASTTerm>,
@@ -24,31 +46,6 @@ impl TypeTerm {
             name,
             resolved_type_name,
         }
-    }
-}
-
-impl ModuleUsableTerm for TypeTerm {
-    fn get_type(&self) -> ModuleTermType {
-        ModuleTermType::Type
-    }
-}
-
-impl ServiceUsableTerm for TypeTerm {
-    fn get_type(&self) -> ServiceTermType {
-        ServiceTermType::Type
-    }
-}
-
-impl ASTTerm for TypeTerm {
-    fn generate_ir(&self) -> Box<IRComponent> {
-        let mut fields = HashMap::<String, Box<IRComponent>>::new();
-        fields.insert("name".to_string(), self.name.generate_ir());
-        fields.insert(
-            "resolvesTo".to_string(),
-            self.resolved_type_name.generate_ir(),
-        );
-
-        Box::new(IRComponent::new_object_from_map(fields))
     }
 }
 

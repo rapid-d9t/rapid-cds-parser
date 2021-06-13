@@ -5,6 +5,12 @@ pub struct NameTerm {
     value: String,
 }
 
+impl ASTTerm for NameTerm {
+    fn generate_ir(&self) -> Box<IRComponent> {
+        Box::new(IRComponent::new_string(self.value.clone()))
+    }
+}
+
 impl NameTerm {
     pub fn new_boxed(value: String) -> Box<NameTerm> {
         Box::new(NameTerm::new(value))
@@ -12,12 +18,6 @@ impl NameTerm {
 
     pub fn new(value: String) -> NameTerm {
         NameTerm { value }
-    }
-}
-
-impl ASTTerm for NameTerm {
-    fn generate_ir(&self) -> Box<IRComponent> {
-        Box::new(IRComponent::new_string(self.value.clone()))
     }
 }
 
