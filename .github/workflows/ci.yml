@@ -56,7 +56,7 @@ jobs:
       run: rustfmt ./src/lib.rs --check
     - name: JS Tests Lint
       run: npm run integration-test-lint
-    - name: JS Tests Lint
+    - name: JS Index Lint
       run: npm run index-lint
   
   code-cov:

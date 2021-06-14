@@ -8,7 +8,7 @@
     "install": "npm run build",
     "test": "cargo test",
     "integration-test-lint": "eslint ./tests/*",
-    "index-lint": "eslint ./tests/*",
+    "index-lint": "eslint ./index.js",
     "integration-test": "jest"
   },
   "author": "zkud",
