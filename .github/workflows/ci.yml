@@ -51,8 +51,10 @@ jobs:
       run: |
         rustup component add rustfmt
         rustfmt --version
-    - name: Lint
+    - name: Rust Lint
       run: rustfmt ./src/lib.rs --check
+    - name: JS Lint
+      run: npm i; eslint ./tests/* ./index.js
   
   code-cov:
     name: Code Coverage
