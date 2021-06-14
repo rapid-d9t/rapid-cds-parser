@@ -47,14 +47,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: "Install external dependencies"
+    - name: Install dependencies
       run: |
         rustup component add rustfmt
         rustfmt --version
+        npm i
     - name: Rust Lint
       run: rustfmt ./src/lib.rs --check
-    - name: JS Lint
-      run: npm i; eslint ./tests/* ./index.js
+    - name: JS Tests Lint
+      run: npm run integration-test-lint
+    - name: JS Tests Lint
+      run: npm run index-lint
   
   code-cov:
     name: Code Coverage
