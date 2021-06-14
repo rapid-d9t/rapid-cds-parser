@@ -3,10 +3,10 @@ const files = require('./util/files');
 
 describe('Rapid CDS Parser Intergration Tests', () => {
   describe('With correct input', () => {
-    test('generate_ir successfully parses', async () => {
+    test('generateIR successfully parses', async () => {
       await files.generateCorrectFile('test.cds');
 
-      const ir = parser.generate_ir('test.cds');
+      const ir = parser.generateIR('test.cds');
 
       await files.deleteFile('test.cds');
 
@@ -15,19 +15,19 @@ describe('Rapid CDS Parser Intergration Tests', () => {
   });
 
   describe('With unexisting file', () => {
-    test('generate_ir drops with an error', () => {
+    test('generateIR drops with an error', () => {
       expect(() => {
-        parser.generate_ir('test.cds');
+        parser.generateIR('test.cds');
       }).toThrow();
     });
   });
 
   describe('With syntactically incorrect input', () => {
-    test('generate_ir drops with an error', async () => {
+    test('generateIR drops with an error', async () => {
       await files.generateIncorrectFile('test.cds');
 
       expect(() => {
-        parser.generate_ir('test.cds');
+        parser.generateIR('test.cds');
       }).toThrow();
 
       await files.deleteFile('test.cds');

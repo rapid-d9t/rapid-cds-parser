@@ -5,7 +5,7 @@ description = "npm module for rapid parsing of cds"
 authors = ["zkud <kudirko.anton@gmail.com>"]
 license = "MIT"
 edition = "2018"
-exclude = ["index.node"]
+exclude = ["lib.node"]
 
 [build-dependencies]
 lalrpop = "0.19.5"
