@@ -2,17 +2,17 @@
  * JS wrapper around a rapid-cds-parser binary library
  * to make it usable in modern IDEs
  */
-const bin = require('./lib');
+const lib = require('./lib');
 
 /**
- * @typedef {Object} Module
+ * @typedef {object} Module
  * @property {Array<Service>} services
  * @property {Array<Entity>} entities
  * @property {Array<Type>} types
  */
 
 /**
- * @typedef {Object} Service
+ * @typedef {object} Service
  * @property {string} name Service's name
  * @property {Array<Function>} functions Service's functions
  * @property {Array<Action>} actions Entity's actions
@@ -20,52 +20,52 @@ const bin = require('./lib');
  */
 
 /**
- * @typedef {Object} Function
+ * @typedef {object} Function
  * @property {string} name Function's name
  * @property {Array<Param>} params Function's params
  * @property {Output} output Function's output
  */
 
 /**
- * @typedef {Object} Action
+ * @typedef {object} Action
  * @property {string} name Action's name
  * @property {Array<Param>} params Action's params
- * @property {bool} hasOutput Action has output
+ * @property {boolean} hasOutput Action has output
  * @property {undefined | Output} output Action's output
  */
 
 /**
- * @typedef {Object} Param
+ * @typedef {object} Param
  * @property {string} name Param's name
- * @property {bool} isArrayed Param's type is arrayed
+ * @property {boolean} isArrayed Param's type is arrayed
  * @property {string} type Param's type
  */
 
 /**
- * @typedef {Object} Output
- * @property {bool} isArrayed Output's type is arrayed
+ * @typedef {object} Output
+ * @property {boolean} isArrayed Output's type is arrayed
  * @property {string} type Output's type
  */
 
 /**
- * @typedef {Object} Entity
+ * @typedef {object} Entity
  * @property {string} name Entity's name
  * @property {Array<string>} aspects Applied aspects
  * @property {Array<Field>} fields Entity's fields
- * @property {bool} isProjection Flag entity is projection to anouther entity
- * @property {null | string} isProjectionOn Name of projected entity
+ * @property {boolean} isProjection Flag entity is projection to anouther entity
+ * @property {undefined | string} isProjectionOn Name of projected entity
  */
 
 /**
- * @typedef {Object} Field
+ * @typedef {object} Field
  * @property {string} name Fields's name
  * @property {string} type Fields's type
- * @property {bool} hasDefault Field has default value
+ * @property {boolean} hasDefault Field has default value
  * @property {*} defaultValue Field's default value
  */
 
 /**
- * @typedef {Object} Type
+ * @typedef {object} Type
  * @property {string} name Type's name
  * @property {string} resolvesTo To which type this type resolves to
  */
@@ -76,7 +76,7 @@ const bin = require('./lib');
  * @return {Module} Generated IR
  */
 function generateIR(path) {
-  return bin.generateIR(path);
+  return lib.generateIR(path);
 }
 
 module.exports = {
