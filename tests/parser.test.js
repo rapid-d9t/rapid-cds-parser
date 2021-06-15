@@ -1,16 +1,12 @@
 const parser = require('..');
-const files = require('./util/files');
+const TestFromFileExecutor = require('./util/files/TestFromFileExecutor');
 
 describe('Rapid CDS Parser Intergration Tests', () => {
   describe('With correct input', () => {
     test('generateIR successfully parses', async () => {
-      await files.generateCorrectFile('test.cds');
+      const executor = new TestFromFileExecutor();
 
-      const ir = parser.generateIR('test.cds');
-
-      await files.deleteFile('test.cds');
-
-      expect(ir).toEqual(files.CORRECT_FILE_IR);
+      await executor.executePositiveTests();
     });
   });
 
@@ -24,13 +20,9 @@ describe('Rapid CDS Parser Intergration Tests', () => {
 
   describe('With syntactically incorrect input', () => {
     test('generateIR drops with an error', async () => {
-      await files.generateIncorrectFile('test.cds');
+      const executor = new TestFromFileExecutor();
 
-      expect(() => {
-        parser.generateIR('test.cds');
-      }).toThrow();
-
-      await files.deleteFile('test.cds');
+      await executor.executeNegativeTests();
     });
   });
 });
