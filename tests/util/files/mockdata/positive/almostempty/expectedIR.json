@@ -1,0 +1,47 @@
+{
+  "types": [],
+  "entities": [
+    {
+      "name": "Test",
+      "aspects": [],
+      "isProjection": false,
+      "fields": [
+        {
+          "name": "field",
+          "hasDefault": false,
+          "type": "TestType"
+        }
+      ]
+    }
+  ],
+  "services": [
+    {
+      "actions": [
+        {
+          "params": [
+            {
+              "name": "arg1",
+              "type": "Test",
+              "isArrayed": false
+            }
+          ],
+          "hasOutput": false,
+          "name": "atest"
+        }
+      ],
+      "name": "TestService",
+      "entities": [
+      ],
+      "functions": [
+        {
+          "output": {
+            "isArrayed": false,
+            "type": "Test"
+          },
+          "params": [],
+          "name": "ftest0"
+        }
+      ]
+    }
+  ]
+}
