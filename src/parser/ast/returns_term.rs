@@ -1,10 +1,23 @@
 use super::traits::ast_term::ASTTerm;
 use crate::ir::ir_component::IRComponent;
-use std::collections::HashMap;
 
 pub struct ReturnsTerm {
     type_name: Box<dyn ASTTerm>,
     is_arrayed: bool,
+}
+
+impl ASTTerm for ReturnsTerm {
+    fn generate_ir(&self) -> Box<IRComponent> {
+        let fields = vec![
+            ("type", self.type_name.generate_ir()),
+            (
+                "isArrayed",
+                Box::new(IRComponent::new_bool(self.is_arrayed)),
+            ),
+        ];
+
+        Box::new(IRComponent::new_object_from_vec(fields))
+    }
 }
 
 impl ReturnsTerm {
@@ -28,19 +41,6 @@ impl ReturnsTerm {
             type_name,
             is_arrayed: true,
         }
-    }
-}
-
-impl ASTTerm for ReturnsTerm {
-    fn generate_ir(&self) -> Box<IRComponent> {
-        let mut fields = HashMap::<String, Box<IRComponent>>::new();
-        fields.insert("type".to_string(), self.type_name.generate_ir());
-        fields.insert(
-            "isArrayed".to_string(),
-            Box::new(IRComponent::new_bool(self.is_arrayed)),
-        );
-
-        Box::new(IRComponent::new_object_from_map(fields))
     }
 }
 

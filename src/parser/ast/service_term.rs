@@ -4,14 +4,65 @@ use super::traits::module_usable_term::ModuleUsableTerm;
 use super::traits::service_term_type::ServiceTermType;
 use super::traits::service_usable_term::ServiceUsableTerm;
 use crate::ir::ir_component::IRComponent;
-use std::collections::HashMap;
 
 pub struct ServiceTerm {
     name: Box<dyn ASTTerm>,
     definitions: Vec<Box<dyn ServiceUsableTerm>>,
 }
 
+impl ModuleUsableTerm for ServiceTerm {
+    fn get_type(&self) -> ModuleTermType {
+        ModuleTermType::Service
+    }
+}
+
+impl ASTTerm for ServiceTerm {
+    fn generate_ir(&self) -> Box<IRComponent> {
+        let fields = vec![
+            ("name", self.name.generate_ir()),
+            ("entities", self.generate_entities_ir()),
+            ("actions", self.generate_actions_ir()),
+            ("functions", self.generate_functions_ir()),
+        ];
+
+        Box::new(IRComponent::new_object_from_vec(fields))
+    }
+}
+
 impl ServiceTerm {
+    fn generate_entities_ir(&self) -> Box<IRComponent> {
+        let entities = self
+            .definitions
+            .iter()
+            .filter(|definition| definition.get_type() == ServiceTermType::Entity)
+            .map(|entity| entity.generate_ir())
+            .collect();
+
+        Box::new(IRComponent::new_array(entities))
+    }
+
+    fn generate_actions_ir(&self) -> Box<IRComponent> {
+        let actions = self
+            .definitions
+            .iter()
+            .filter(|definition| definition.get_type() == ServiceTermType::Action)
+            .map(|entity| entity.generate_ir())
+            .collect();
+
+        Box::new(IRComponent::new_array(actions))
+    }
+
+    fn generate_functions_ir(&self) -> Box<IRComponent> {
+        let functions = self
+            .definitions
+            .iter()
+            .filter(|definition| definition.get_type() == ServiceTermType::Function)
+            .map(|function| function.generate_ir())
+            .collect();
+
+        Box::new(IRComponent::new_array(functions))
+    }
+
     pub fn new_boxed(
         name: Box<dyn ASTTerm>,
         definitions: Vec<Box<dyn ServiceUsableTerm>>,
@@ -24,54 +75,6 @@ impl ServiceTerm {
         definitions: Vec<Box<dyn ServiceUsableTerm>>,
     ) -> ServiceTerm {
         ServiceTerm { name, definitions }
-    }
-}
-
-impl ModuleUsableTerm for ServiceTerm {
-    fn get_type(&self) -> ModuleTermType {
-        ModuleTermType::Service
-    }
-}
-
-impl ASTTerm for ServiceTerm {
-    fn generate_ir(&self) -> Box<IRComponent> {
-        let entities = self
-            .definitions
-            .iter()
-            .filter(|definition| definition.get_type() == ServiceTermType::Entity)
-            .map(|entity| entity.generate_ir())
-            .collect();
-
-        let actions = self
-            .definitions
-            .iter()
-            .filter(|definition| definition.get_type() == ServiceTermType::Action)
-            .map(|entity| entity.generate_ir())
-            .collect();
-
-        let functions = self
-            .definitions
-            .iter()
-            .filter(|definition| definition.get_type() == ServiceTermType::Function)
-            .map(|function| function.generate_ir())
-            .collect();
-
-        let mut fields = HashMap::<String, Box<IRComponent>>::new();
-        fields.insert("name".to_string(), self.name.generate_ir());
-        fields.insert(
-            "entities".to_string(),
-            Box::new(IRComponent::new_array(entities)),
-        );
-        fields.insert(
-            "actions".to_string(),
-            Box::new(IRComponent::new_array(actions)),
-        );
-        fields.insert(
-            "functions".to_string(),
-            Box::new(IRComponent::new_array(functions)),
-        );
-
-        Box::new(IRComponent::new_object_from_map(fields))
     }
 }
 

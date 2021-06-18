@@ -20,6 +20,6 @@ fn generate_ir(mut cx: FunctionContext) -> JsResult<JsValue> {
 #[neon::main]
 #[cfg(not(tarpaulin_include))]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
-    cx.export_function("generate_ir", generate_ir)?;
+    cx.export_function("generateIR", generate_ir)?;
     Ok(())
 }
