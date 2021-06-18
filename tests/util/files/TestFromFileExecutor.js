@@ -30,7 +30,7 @@ class TestFromFileExecutor {
    */
   async executePositiveTests() {
     const testDirectories = await this
-        .loadTestsFromDirectories(this.positiveTestsRootDirectory);
+        .loadTestsFromDirectory(this.positiveTestsRootDirectory);
 
     await Promise.all(
         testDirectories.map((testPath) => this.executePositiveTest(testPath)),
@@ -42,7 +42,7 @@ class TestFromFileExecutor {
    * @return {Array<string>} Test directories names
    * @private
    */
-  async loadTestsFromDirectories(path) {
+  async loadTestsFromDirectory(path) {
     return fs.readdir(path);
   }
 
@@ -67,6 +67,7 @@ class TestFromFileExecutor {
     const indexPath = this.joinFilePath(
         [this.positiveTestsRootDirectory, testPath, 'index.cds'],
     );
+
     return parser.generateIR(indexPath);
   }
 
@@ -79,7 +80,9 @@ class TestFromFileExecutor {
     const IRPath = this.joinFilePath(
         [this.positiveTestsRootDirectory, testPath, 'expectedIR.json'],
     );
+
     const data = await fs.readFile(IRPath);
+
     return JSON.parse(data);
   }
 
@@ -88,7 +91,7 @@ class TestFromFileExecutor {
    */
   async executeNegativeTests() {
     const testDirectories = await this
-        .loadTestsFromDirectories(this.negativeTestsRootDirectory);
+        .loadTestsFromDirectory(this.negativeTestsRootDirectory);
 
     testDirectories.forEach((testPath) => this.executeNegativeTest(testPath));
   }
