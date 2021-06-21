@@ -94,8 +94,8 @@ mod tests {
             NameTerm::new_boxed("mock-name".to_string()),
             NameTerm::new_boxed("mock-type".to_string()),
             Some(vec![
-                TypeArgumentTerm::new_boxed("123".to_string()),
-                TypeArgumentTerm::new_boxed("5467".to_string()),
+                TypeArgumentTerm::new_boxed(123),
+                TypeArgumentTerm::new_boxed(5467),
             ]),
         );
         let field_ir = field_term.generate_ir();

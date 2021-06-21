@@ -12,6 +12,8 @@ use crate::parser::ast::entity_term::EntityTerm;
 use crate::parser::ast::service_term::ServiceTerm;
 use crate::parser::ast::module_term::ModuleTerm;
 use crate::parser::ast::type_argument_term::TypeArgumentTerm;
+use lalrpop_util::ParseError;
+use std::str::FromStr;
 
 grammar;
 
@@ -213,14 +215,20 @@ Type: Box<TypeTerm> = {
 }
 
 Name: Box<NameTerm> = {
-    <value:r"[A-Za-z_-][-a-zA-Z0-9-]*"> => NameTerm::new_boxed(value.to_string()),
+    <value:r"[A-Za-z_-][a-zA-Z0-9_-]*"> => NameTerm::new_boxed(value.to_string()),
 }
 
 
 TypeArgument: Box<TypeArgumentTerm> = {
-    <value:r"[\d]+"> => TypeArgumentTerm::new_boxed(value.to_string())
+    <number:Number> => TypeArgumentTerm::new_boxed(number)
 }
 
+
+Number: u64 = {
+    r"[\d]+" =>? u64::from_str(<>).map_err(
+            |x| ParseError::from("invalid integer")
+        )
+}
 
 TypeArguments: Vec<Box<dyn ASTTerm>> = {
     <type_property:TypeArgument> => {

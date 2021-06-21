@@ -2,24 +2,22 @@ use crate::ir::ir_component::IRComponent;
 use crate::parser::ast::traits::ast_term::ASTTerm;
 
 pub struct TypeArgumentTerm {
-    value: i64,
-}
-
-impl TypeArgumentTerm {
-    pub fn new_boxed(value: String) -> Box<TypeArgumentTerm> {
-        Box::new(TypeArgumentTerm::new(value))
-    }
-
-    pub fn new(value: String) -> TypeArgumentTerm {
-        let value: i64 = value.parse().expect("Invalid syntax");
-
-        TypeArgumentTerm { value }
-    }
+    value: u64,
 }
 
 impl ASTTerm for TypeArgumentTerm {
     fn generate_ir(&self) -> Box<IRComponent> {
         Box::new(IRComponent::new_number(self.value as f64))
+    }
+}
+
+impl TypeArgumentTerm {
+    pub fn new_boxed(value: u64) -> Box<TypeArgumentTerm> {
+        Box::new(TypeArgumentTerm::new(value))
+    }
+
+    pub fn new(value: u64) -> TypeArgumentTerm {
+        TypeArgumentTerm { value }
     }
 }
 
@@ -31,7 +29,7 @@ mod tests {
 
     #[test]
     fn it_generates_ir() {
-        let type_argument_term = TypeArgumentTerm::new_boxed("1234".to_string());
+        let type_argument_term = TypeArgumentTerm::new_boxed(1234);
 
         let generated_ir = type_argument_term.generate_ir();
 
