@@ -36,7 +36,7 @@
       "entities": [],
       "functions": [
         {
-          "name": "ftest0",
+          "name": "ftest1",
           "params": [],
           "output": {
             "type": "Test",
@@ -55,14 +55,14 @@
             "type": "Test",
             "isArrayed": false
           },
-          "name": "ftest1"
+          "name": "ftest2"
         },
         {
           "output": {
             "type": "Test",
             "isArrayed": false
           },
-          "name": "ftest2",
+          "name": "ftest3",
           "params": [
             {
               "name": "arg1",
@@ -81,7 +81,7 @@
             "type": "Test",
             "isArrayed": false
           },
-          "name": "ftest3",
+          "name": "ftest4",
           "params": [
             {
               "name": "arg1",
