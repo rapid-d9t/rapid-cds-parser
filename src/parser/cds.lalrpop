@@ -188,7 +188,7 @@ Params: Vec<Box<dyn ASTTerm>> = {
         params.push(param);
         params
     },
-    <params:Params> <param:Param> => {
+    <params:Params> "," <param:Param> => {
         let mut new_params: Vec<Box<dyn ASTTerm>> = Vec::new();
         new_params.extend(params);
         new_params.push(param);

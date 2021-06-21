@@ -1,0 +1,106 @@
+{
+  "entities": [],
+  "types": [],
+  "services": [
+    {
+      "name": "TestService",
+      "actions": [
+        {
+          "params": [
+            {
+              "type": "Test",
+              "isArrayed": false,
+              "name": "arg1"
+            }
+          ],
+          "hasOutput": false,
+          "name": "atest1"
+        },
+        {
+          "params": [
+            {
+              "name": "arg1",
+              "isArrayed": false,
+              "type": "Test"
+            },
+            {
+              "name": "arg2",
+              "type": "Test",
+              "isArrayed": false
+            }
+          ],
+          "name": "atest",
+          "hasOutput": false
+        }
+      ],
+      "entities": [],
+      "functions": [
+        {
+          "name": "ftest1",
+          "params": [],
+          "output": {
+            "type": "Test",
+            "isArrayed": false
+          }
+        },
+        {
+          "params": [
+            {
+              "isArrayed": false,
+              "name": "arg1",
+              "type": "Test"
+            }
+          ],
+          "output": {
+            "type": "Test",
+            "isArrayed": false
+          },
+          "name": "ftest2"
+        },
+        {
+          "output": {
+            "type": "Test",
+            "isArrayed": false
+          },
+          "name": "ftest3",
+          "params": [
+            {
+              "name": "arg1",
+              "type": "Test",
+              "isArrayed": false
+            },
+            {
+              "name": "arg2",
+              "isArrayed": false,
+              "type": "Test2"
+            }
+          ]
+        },
+        {
+          "output": {
+            "type": "Test",
+            "isArrayed": false
+          },
+          "name": "ftest4",
+          "params": [
+            {
+              "name": "arg1",
+              "type": "Test",
+              "isArrayed": false
+            },
+            {
+              "name": "arg2",
+              "isArrayed": false,
+              "type": "Test2"
+            },
+            {
+              "name": "arg3",
+              "isArrayed": false,
+              "type": "Test3"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
