@@ -8,5 +8,5 @@ pub mod param_term;
 pub mod returns_term;
 pub mod service_term;
 pub mod traits;
-pub mod type_term;
 pub mod type_argument_term;
+pub mod type_term;
