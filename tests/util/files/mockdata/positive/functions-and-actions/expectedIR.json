@@ -55,14 +55,14 @@
             "type": "Test",
             "isArrayed": false
           },
-          "name": "ftest0"
+          "name": "ftest1"
         },
         {
           "output": {
             "type": "Test",
             "isArrayed": false
           },
-          "name": "ftest0",
+          "name": "ftest2",
           "params": [
             {
               "name": "arg1",
@@ -73,6 +73,30 @@
               "name": "arg2",
               "isArrayed": false,
               "type": "Test2"
+            }
+          ]
+        },
+        {
+          "output": {
+            "type": "Test",
+            "isArrayed": false
+          },
+          "name": "ftest3",
+          "params": [
+            {
+              "name": "arg1",
+              "type": "Test",
+              "isArrayed": false
+            },
+            {
+              "name": "arg2",
+              "isArrayed": false,
+              "type": "Test2"
+            },
+            {
+              "name": "arg3",
+              "isArrayed": false,
+              "type": "Test3"
             }
           ]
         }
