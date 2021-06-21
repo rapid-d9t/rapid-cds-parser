@@ -158,7 +158,7 @@ Fields: Vec<Box<dyn ASTTerm>> = {
 
 Field: Box<FieldTerm> = {
     <name:Name> ":" <type_name:Name> ";" => FieldTerm::new_boxed(name, type_name, None),
-    <name:Name> ":" <type_name:Name> "(" <type_arguments:TypeArguments> ")" =>
+    <name:Name> ":" <type_name:Name> "(" <type_arguments:TypeArguments> ")" ";" =>
          FieldTerm::new_boxed(name, type_name, Some(type_arguments))
 }
 
@@ -213,7 +213,7 @@ Type: Box<TypeTerm> = {
 }
 
 Name: Box<NameTerm> = {
-    <value:r"[A-Za-z_][a-zA-Z0-9-]*"> => NameTerm::new_boxed(value.to_string())
+    <value:r"[A-Za-z_-][-a-zA-Z0-9-]*"> => NameTerm::new_boxed(value.to_string()),
 }
 
 
@@ -228,7 +228,7 @@ TypeArguments: Vec<Box<dyn ASTTerm>> = {
         arguments.push(type_property);
         arguments
     },
-    <type_properties:TypeArguments> <type_property:TypeArgument> => {
+    <type_properties:TypeArguments> "," <type_property:TypeArgument> => {
         let mut new_type_arguments: Vec<Box<dyn ASTTerm>> = Vec::new();
         new_type_arguments.extend(type_properties);
         new_type_arguments.push(type_property);
