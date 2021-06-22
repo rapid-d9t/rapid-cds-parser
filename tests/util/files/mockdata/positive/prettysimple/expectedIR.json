@@ -15,6 +15,18 @@
           "name": "field2",
           "type": "TestType2",
           "hasDefault": false
+        },
+        {
+          "name": "field3",
+          "type": "TestType3",
+          "hasDefault": false,
+          "typeArguments": [1, 2, 3]
+        },
+        {
+          "name": "field4",
+          "type": "TestType4",
+          "hasDefault": false,
+          "typeArguments": [1]
         }
       ]
     }

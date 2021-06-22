@@ -11,6 +11,9 @@ use crate::parser::ast::action_term::ActionTerm;
 use crate::parser::ast::entity_term::EntityTerm;
 use crate::parser::ast::service_term::ServiceTerm;
 use crate::parser::ast::module_term::ModuleTerm;
+use crate::parser::ast::type_argument_term::TypeArgumentTerm;
+use lalrpop_util::ParseError;
+use std::str::FromStr;
 
 grammar;
 
@@ -156,7 +159,9 @@ Fields: Vec<Box<dyn ASTTerm>> = {
 }
 
 Field: Box<FieldTerm> = {
-    <name:Name> ":" <type_name:Name> ";" => FieldTerm::new_boxed(name, type_name)
+    <name:Name> ":" <type_name:Name> ";" => FieldTerm::new_boxed(name, type_name, None),
+    <name:Name> ":" <type_name:Name> "(" <type_arguments:TypeArguments> ")" ";" =>
+         FieldTerm::new_boxed(name, type_name, Some(type_arguments))
 }
 
 Action: Box<ActionTerm> = {
@@ -210,5 +215,34 @@ Type: Box<TypeTerm> = {
 }
 
 Name: Box<NameTerm> = {
-    <value:r"[a-zA-Z0-9-]+"> => NameTerm::new_boxed(value.to_string())
+    <value:r"[A-Za-z_][a-zA-Z0-9_]*"> => NameTerm::new_boxed(value.to_string()),
+}
+
+
+Number: i64 = {
+    r"[-+]?[\d]+" =>? i64::from_str(<>).map_err(
+            |x| ParseError::from("invalid integer")
+        )
+}
+
+TypeArgument: Box<TypeArgumentTerm> = {
+    <number:Number> =>? if number > 0 {
+        Ok(TypeArgumentTerm::new_boxed(number as u64))
+    } else {
+        Err(ParseError::from("number must be positive!"))
+    }
+}
+
+TypeArguments: Vec<Box<dyn ASTTerm>> = {
+    <type_property:TypeArgument> => {
+        let mut arguments: Vec<Box<dyn ASTTerm>> = Vec::new();
+        arguments.push(type_property);
+        arguments
+    },
+    <type_properties:TypeArguments> "," <type_property:TypeArgument> => {
+        let mut new_type_arguments: Vec<Box<dyn ASTTerm>> = Vec::new();
+        new_type_arguments.extend(type_properties);
+        new_type_arguments.push(type_property);
+        new_type_arguments
+    }
 }

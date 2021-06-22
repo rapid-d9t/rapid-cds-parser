@@ -1,6 +1,9 @@
 entity Test {
     field : TestType;
     field2    : TestType2;
+    field3 : TestType3(1, 2, 3);
+    field4 : TestType4( +1 )
+    ;
 }
 
 service TestService {
