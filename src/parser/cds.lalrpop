@@ -215,19 +215,22 @@ Type: Box<TypeTerm> = {
 }
 
 Name: Box<NameTerm> = {
-    <value:r"[A-Za-z_-][a-zA-Z0-9_-]*"> => NameTerm::new_boxed(value.to_string()),
+    <value:r"[A-Za-z_][a-zA-Z0-9_]*"> => NameTerm::new_boxed(value.to_string()),
 }
 
 
-TypeArgument: Box<TypeArgumentTerm> = {
-    <number:Number> => TypeArgumentTerm::new_boxed(number)
-}
-
-
-Number: u64 = {
-    r"[\d]+" =>? u64::from_str(<>).map_err(
+Number: i64 = {
+    r"[-+]?[\d]+" =>? i64::from_str(<>).map_err(
             |x| ParseError::from("invalid integer")
         )
+}
+
+TypeArgument: Box<TypeArgumentTerm> = {
+    <number:Number> =>? if number > 0 {
+        Ok(TypeArgumentTerm::new_boxed(number as u64))
+    } else {
+        Err(ParseError::from("number must be positive!"))
+    }
 }
 
 TypeArguments: Vec<Box<dyn ASTTerm>> = {
